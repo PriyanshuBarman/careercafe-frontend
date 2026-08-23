@@ -19,7 +19,7 @@ import AnalystPathwayCard from "../analyst-pathways-card";
 
 export default function AnalystPathways() {
   return (
-    <section className="mx-auto mt-8 mb-26 flex max-w-350 flex-col px-4 py-12 sm:px-6 md:px-8 md:py-20">
+    <section className="mx-auto flex max-w-350 flex-col px-4 py-12 sm:px-6 md:px-8 md:py-20">
       <div className="flex flex-col items-center justify-center gap-3 text-center sm:gap-5">
         <Badge className="text-cc-sage-900 dark:bg-cc-sage-900/30 text-2xs bg-cc-sage-100 rounded-full py-3 pr-3 pl-2 tracking-wider sm:gap-2 sm:py-3.5 sm:pr-3.5 sm:pl-2.5 sm:text-xs [&>svg]:size-5.25!">
           <HugeiconsIcon
@@ -40,7 +40,7 @@ export default function AnalystPathways() {
       </div>
 
       {/* Row 1: 4 role cards in a responsive grid */}
-      <div className="mt-14 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-14 grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
         {ROLES.map((item) => (
           <AnalystPathwayCard key={item.title} item={item} />
         ))}
@@ -49,7 +49,7 @@ export default function AnalystPathways() {
       {/* Row 2: "Not Sure Yet?" sage card as an Item component (full-width banner) */}
       <Item
         variant="outline"
-        className="mt-6 sm:mt-12 rounded-2xl w-fit mx-auto sm:px-6 sm:py-4 md:gap-6"
+        className="mx-auto mt-6 w-fit rounded-2xl sm:mt-12 sm:px-6 sm:py-4 md:gap-6"
       >
         <ItemMedia className="self-center!">
           <HugeiconsIcon
