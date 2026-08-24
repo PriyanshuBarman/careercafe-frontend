@@ -60,7 +60,7 @@ export default function DetailCard({ activeRole }: DetailCardProps) {
         <div>
           <p className="text-sm font-medium sm:text-lg">Core Skills</p>
           <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 sm:gap-x-3">
-            {activeRole.coreSkills.map((skill) => (
+            {activeRole.skills.map((skill) => (
               <Badge
                 key={skill.name}
                 variant="secondary"

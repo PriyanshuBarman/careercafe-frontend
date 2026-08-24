@@ -9,7 +9,7 @@ export default function HowItWorks() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-20 lg:px-8">
       <div className="flex flex-col items-center justify-center gap-3 text-center sm:gap-5">
-        <span className="text-cc-sage-900 text-xs font-medium tracking-wider text-balance sm:text-sm md:text-base">
+        <span className="text-primary text-xs font-medium tracking-wider text-balance sm:text-sm md:text-base">
           HOW CAREERCAFE WORKS
         </span>
         <h2 className="text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl">

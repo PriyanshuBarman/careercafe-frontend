@@ -1,12 +1,12 @@
-type FooterLink = {
+interface FooterLink {
   title: string;
   href: string;
-};
+}
 
-type FooterSection = {
+interface FooterSection {
   title: string;
   links: FooterLink[];
-};
+}
 
 export const FOOTER_SECTIONS = [
   {
@@ -154,4 +154,4 @@ export const FOOTER_SECTIONS = [
       },
     ],
   },
-] as const satisfies FooterSection[];
+] as const satisfies readonly FooterSection[];

@@ -3,20 +3,22 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { ProgrammeItem } from "@/constants/programmes";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import type { Programme } from "@/constants/programmes";
 
-export default function ProgrammeCard({
-  programme,
-}: {
-  programme: ProgrammeItem;
-}) {
+export default function ProgrammeCard({ programme }: { programme: Programme }) {
   const isSage = programme.variant === "sage";
 
   return (
     <Card
       className={cn(
-        "bg-linear-to-b rounded-3xl p-4 md:p-6",
+        "gap-8 rounded-3xl bg-linear-to-b p-4 md:gap-8 md:p-6",
         isSage
           ? "from-cc-sage-100/40 ring-cc-sage-900/30 dark:ring-cc-sage-900/50 via-card to-card dark:from-cc-sage-900/20 dark:via-card dark:to-card"
           : "from-cc-orange/5 via-card ring-primary/30 to-card dark:from-cc-orange/10 dark:via-card dark:to-card",
@@ -60,8 +62,8 @@ export default function ProgrammeCard({
         </div>
       </CardHeader>
 
-      <CardContent className="px-0">
-        <ul className="mt-6 space-y-2 px-2 md:space-y-4">
+      <CardContent className="px-2">
+        <ul className="space-y-2 md:space-y-4">
           {programme.features.map((item, index) => (
             <li
               key={index}
@@ -83,11 +85,12 @@ export default function ProgrammeCard({
             </li>
           ))}
         </ul>
-
+      </CardContent>
+      <CardFooter className="bg-card mt-auto border-none px-0 pb-4 md:pb-6">
         <Button
           variant={isSage ? "ghost" : "default"}
           className={cn(
-            "mt-10 w-full p-5 text-xs sm:p-6 sm:text-sm",
+            "w-full p-5 text-xs sm:p-6 sm:text-sm",
             isSage
               ? "border-cc-sage-700 dark:text-cc-sage-500 hover:bg-cc-sage-100 text-cc-sage-900 border"
               : "dark:bg-primary/50 dark:text-foreground",
@@ -100,7 +103,7 @@ export default function ProgrammeCard({
             className="size-4 sm:size-5"
           />
         </Button>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }

@@ -1,7 +1,7 @@
 import { Award04Icon, Plant01Icon } from "@hugeicons/core-free-icons";
 import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
 
-export type ProgrammeItem = {
+export interface Programme {
   variant: "sage" | "primary";
   icon: IconSvgObject;
   title: string;
@@ -9,7 +9,7 @@ export type ProgrammeItem = {
   features: string[];
   buttonLabel: string;
   href: string;
-};
+}
 
 export const PROGRAMMES = [
   {
@@ -38,4 +38,4 @@ export const PROGRAMMES = [
     buttonLabel: "Start Placement Preparation",
     href: "#",
   },
-] as const satisfies ProgrammeItem[];
+] as const satisfies readonly Programme[];

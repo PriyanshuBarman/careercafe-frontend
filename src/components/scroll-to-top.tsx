@@ -6,7 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 
 type ScrollToTopProps = {
   scrollThreshold?: number;
@@ -14,7 +14,7 @@ type ScrollToTopProps = {
 };
 
 export default function ScrollToTop({
-  scrollThreshold = 800,
+  scrollThreshold = 1200,
   className,
 }: ScrollToTopProps) {
   const [isVisible, setIsVisible] = useState(false);

@@ -9,8 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Item, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { Separator } from "@/components/ui/separator";
 import { COMPANIES } from "@/constants/companies";
-import { HERO_PATHWAYS } from "@/constants/hero";
 import StudentShowcase from "../students-showcase";
+
+ const HERO_PATHWAYS = [
+  "Business",
+  "Data",
+  "Technical",
+  "Consulting",
+]
 
 export default function Hero() {
   return (

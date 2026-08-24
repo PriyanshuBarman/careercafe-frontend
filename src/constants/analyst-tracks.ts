@@ -17,34 +17,34 @@ import {
 } from "@hugeicons/core-free-icons";
 import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
 
-export type TrackSkill = {
+export type TrackId = "business" | "data" | "technical" | "consulting";
+
+interface TrackSkill {
   name: string;
   icon?: IconSvgObject;
-};
+}
 
-export type TrackAbout = {
+interface TrackAbout {
   focus: string;
   strengths: string;
   typicalTools: string;
   careerGrowth: string[];
-};
+}
 
-export type TrackId = "business" | "data" | "technical" | "consulting";
-
-export type AnalystTrack = {
+export interface AnalystTrack {
   id: TrackId;
   name: string;
   icon: IconSvgObject;
   description: string;
   typicalWork: string[];
-  coreSkills: TrackSkill[];
+  skills: TrackSkill[];
   interviewFocus: string[];
   about: TrackAbout;
   practiceLink: string;
   interviewQuestionsLink: string;
-};
+}
 
-export const ANALYST_TRACKS: Record<TrackId, AnalystTrack> = {
+export const ANALYST_TRACKS = {
   business: {
     id: "business",
     name: "Business Analyst",
@@ -56,7 +56,7 @@ export const ANALYST_TRACKS: Record<TrackId, AnalystTrack> = {
       "Work with stakeholders to align business and technical needs",
       "Conduct cost-benefit analysis and track KPIs",
     ],
-    coreSkills: [
+    skills: [
       { name: "SQL", icon: DatabaseIcon },
       { name: "Excel", icon: FileSpreadsheetIcon },
       { name: "Requirements Gathering", icon: DashboardSquare02Icon },
@@ -97,7 +97,7 @@ export const ANALYST_TRACKS: Record<TrackId, AnalystTrack> = {
       "Identify trends and insights",
       "Support data-driven decision making",
     ],
-    coreSkills: [
+    skills: [
       { name: "SQL", icon: DatabaseIcon },
       { name: "Python", icon: PythonIcon },
       { name: "Excel", icon: FileSpreadsheetIcon },
@@ -137,7 +137,7 @@ export const ANALYST_TRACKS: Record<TrackId, AnalystTrack> = {
       "Collaborate with engineers on technical architecture specs",
       "Troubleshoot issues and support scalable integrations",
     ],
-    coreSkills: [
+    skills: [
       { name: "SQL", icon: DatabaseIcon },
       { name: "Python", icon: PythonIcon },
       { name: "APIs & Integration", icon: CodeXmlIcon },
@@ -178,7 +178,7 @@ export const ANALYST_TRACKS: Record<TrackId, AnalystTrack> = {
       "Build financial models and slide presentations",
       "Present strategic recommendations to leadership",
     ],
-    coreSkills: [
+    skills: [
       { name: "Case Solving", icon: Target02Icon },
       { name: "Guesstimates", icon: QuestionIcon },
       { name: "Excel & Modeling", icon: FileSpreadsheetIcon },
@@ -208,4 +208,4 @@ export const ANALYST_TRACKS: Record<TrackId, AnalystTrack> = {
     practiceLink: "#practice-consulting",
     interviewQuestionsLink: "#questions-consulting",
   },
-};
+} as const satisfies Record<TrackId, AnalystTrack>;

@@ -5,14 +5,14 @@ import {
 } from "@hugeicons/core-free-icons";
 import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
 
-export type HowItWorksStep = {
+export interface HowItWorksStep {
   step: number;
   variant: "sage" | "primary";
   icon: IconSvgObject;
   title: string;
   description: string;
   features: string[];
-};
+}
 
 export const HOW_IT_WORKS_STEPS = [
   {
@@ -51,4 +51,4 @@ export const HOW_IT_WORKS_STEPS = [
       "Actionable final guidance",
     ],
   },
-] as const satisfies HowItWorksStep[];
+] as const satisfies readonly HowItWorksStep[];

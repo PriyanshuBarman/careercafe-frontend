@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import {
   AiMagicIcon,
   ArrowRightIcon,
   ArrowUpRightIcon,
-  CheckIcon,
   CheckmarkCircle02Icon,
   File02Icon,
   InformationCircleIcon,
-  UserMultiple02Icon,
+  UserMultiple02Icon
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -40,18 +39,7 @@ export default function CompanyPrep() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-20 lg:px-8">
       <div className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-3 text-center sm:gap-5">
-        <Badge className="text-cc-sage-900 dark:bg-cc-sage-900/30 bg-cc-sage-100 gap-2 rounded-full py-3.5 pr-3.5 pl-2.5 text-xs tracking-wider md:text-sm [&>svg]:size-5.25!">
-          <div className="bg-cc-sage-700 text-background rounded-full p-0.75">
-            <HugeiconsIcon
-              strokeWidth={2}
-              icon={CheckIcon}
-              className="size-2.5 sm:size-3"
-            />
-          </div>
-          Business Analyst selected
-        </Badge>
-
-        <span className="text-cc-sage-900 pt-2 text-xs font-medium tracking-wider text-balance sm:text-sm md:text-base">
+        <span className="text-primary text-xs font-medium tracking-wider text-balance sm:text-sm md:text-base">
           COMPANY-SPECIFIC PREPARATION
         </span>
 

@@ -6,19 +6,19 @@ import {
 } from "@hugeicons/core-free-icons";
 import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
 
-export type CompanySkill = {
+interface CompanySkill {
   name: string;
-  icon?: IconSvgObject;
-};
+  icon: IconSvgObject;
+}
 
-export type CompanyItem = {
+interface Company {
   href: string;
   img: string;
   title: string;
   description: string;
   skills: CompanySkill[];
   features: string[];
-};
+}
 
 export const COMPANIES = [
   {
@@ -93,4 +93,4 @@ export const COMPANIES = [
       "Interview-ready analytical thinking",
     ],
   },
-] as const satisfies CompanyItem[];
+] as const satisfies readonly Company[];

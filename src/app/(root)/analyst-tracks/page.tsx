@@ -1,10 +1,9 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import AnalystTracksView from "@/components/analyst-tracks/analyst-tracks-view";
 
 export const metadata: Metadata = {
-  title: "Analyst Tracks | CareerCafe",
+  title: "Analyst Tracks",
   description:
     "Explore your analyst direction. Compare Business Analyst, Data Analyst, Technical Analyst, and Consulting Analyst career tracks and interview preparation expectations.",
 };
@@ -22,9 +21,7 @@ export default function AnalystTracksPage() {
         </p>
       </div>
 
-      <Suspense fallback={null}>
-        <AnalystTracksView />
-      </Suspense>
+      <AnalystTracksView />
     </section>
   );
 }
