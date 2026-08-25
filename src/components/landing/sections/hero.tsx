@@ -11,12 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { COMPANIES } from "@/constants/companies";
 import StudentShowcase from "../students-showcase";
 
- const HERO_PATHWAYS = [
-  "Business",
-  "Data",
-  "Technical",
-  "Consulting",
-]
+const HERO_PATHWAYS = ["Business", "Data", "Technical", "Consulting"];
 
 export default function Hero() {
   return (

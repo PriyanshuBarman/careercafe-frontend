@@ -15,13 +15,13 @@ import {
   User03Icon,
   WorkflowSquare06Icon,
 } from "@hugeicons/core-free-icons";
-import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
+import type { IconSvgElement } from "@hugeicons/react";
 
 export type TrackId = "business" | "data" | "technical" | "consulting";
 
 interface TrackSkill {
   name: string;
-  icon?: IconSvgObject;
+  icon?: IconSvgElement;
 }
 
 interface TrackAbout {
@@ -34,7 +34,7 @@ interface TrackAbout {
 export interface AnalystTrack {
   id: TrackId;
   name: string;
-  icon: IconSvgObject;
+  icon: IconSvgElement;
   description: string;
   typicalWork: string[];
   skills: TrackSkill[];

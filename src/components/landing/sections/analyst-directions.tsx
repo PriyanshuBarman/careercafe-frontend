@@ -1,6 +1,6 @@
+import { ArrowUpRightIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { LinkButton } from "@/components/link-button";
 import {
   Item,
   ItemContent,
@@ -9,8 +9,8 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
+import { LinkButton } from "@/components/link-button";
 import { ANALYST_ROLES } from "@/constants/analyst-roles";
-import { ArrowUpRightIcon } from "@hugeicons/core-free-icons";
 
 export default function AnalystDirections() {
   return (

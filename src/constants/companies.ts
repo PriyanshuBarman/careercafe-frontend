@@ -4,11 +4,11 @@ import {
   File02Icon,
   Message01Icon,
 } from "@hugeicons/core-free-icons";
-import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
+import type { IconSvgElement } from "@hugeicons/react";
 
 interface CompanySkill {
   name: string;
-  icon: IconSvgObject;
+  icon: IconSvgElement;
 }
 
 interface Company {

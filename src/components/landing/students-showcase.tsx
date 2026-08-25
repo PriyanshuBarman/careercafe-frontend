@@ -122,7 +122,10 @@ function StudentCard({
         </CardDescription>
       </CardHeader>
       <CardFooter
-        className={cn("border-none mt-auto bg-transparent", isLarge ? "pt-2" : "pt-0")}
+        className={cn(
+          "mt-auto border-none bg-transparent",
+          isLarge ? "pt-2" : "pt-0",
+        )}
       >
         <div className="flex items-center gap-2">
           <div className="bg-cc-sage-900 rounded-full p-1">

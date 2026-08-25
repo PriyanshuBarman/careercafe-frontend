@@ -4,10 +4,10 @@ import {
   DatabaseSearchIcon,
   User03Icon,
 } from "@hugeicons/core-free-icons";
-import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
+import type { IconSvgElement } from "@hugeicons/react";
 
 interface AnalystPathwayItem {
-  icon: IconSvgObject;
+  icon: IconSvgElement;
   title: string;
   description: string;
 }

@@ -16,7 +16,10 @@ export default function Navbar() {
         <NavMenu className="hidden lg:block" />
 
         <div className="flex items-center gap-3">
-          <ThemeToggle enableHotKey className="sm:rounded-full bg-transparent sm:p-5" />
+          <ThemeToggle
+            enableHotKey
+            className="bg-transparent sm:rounded-full sm:p-5"
+          />
 
           <Button variant="ghost" className="px-4 py-5 max-sm:hidden">
             Login

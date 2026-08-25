@@ -3,12 +3,12 @@ import {
   Chat01Icon,
   User03Icon,
 } from "@hugeicons/core-free-icons";
-import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
+import type { IconSvgElement } from "@hugeicons/react";
 
 export interface HowItWorksStep {
   step: number;
   variant: "sage" | "primary";
-  icon: IconSvgObject;
+  icon: IconSvgElement;
   title: string;
   description: string;
   features: string[];

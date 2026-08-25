@@ -1,11 +1,8 @@
-import {
-  BriefcaseBusinessIcon,
-  CodeIcon,
-} from "@hugeicons/core-free-icons";
-import type { IconSvgObject } from "@hugeicons/core-free-icons/types";
+import { BriefcaseBusinessIcon, CodeIcon } from "@hugeicons/core-free-icons";
+import type { IconSvgElement } from "@hugeicons/react";
 
 interface Challenge {
-  icon: IconSvgObject;
+  icon: IconSvgElement;
   title: string;
   description: string;
 }

@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
 import type { Programme } from "@/constants/programmes";
 

@@ -17,7 +17,7 @@ export default function HowItWorksCard({ step }: { step: HowItWorksStep }) {
   return (
     <Card
       className={cn(
-        "bg-linear-to-b rounded-2xl p-6 sm:p-8",
+        "rounded-2xl bg-linear-to-b p-6 sm:p-8",
         isSage
           ? "ring-cc-sage-900/30 dark:ring-cc-sage-900/50"
           : "ring-primary/50",

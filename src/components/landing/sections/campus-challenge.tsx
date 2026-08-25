@@ -14,7 +14,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
-import { FLOW_STEPS, CHALLENGES } from "@/constants/campus-challenge";
+import { CHALLENGES, FLOW_STEPS } from "@/constants/campus-challenge";
 
 export default function CampusChallenge() {
   return (

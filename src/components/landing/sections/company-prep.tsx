@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   AiMagicIcon,
   ArrowRightIcon,
@@ -7,10 +8,9 @@ import {
   CheckmarkCircle02Icon,
   File02Icon,
   InformationCircleIcon,
-  UserMultiple02Icon
+  UserMultiple02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
