@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AnalystTracksPage() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
       <div className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-3 text-center sm:gap-4">
         <h1 className="text-xl font-semibold tracking-tight sm:text-3xl md:text-3xl lg:text-4xl">
           Analyst Tracks
@@ -22,6 +22,6 @@ export default function AnalystTracksPage() {
       </div>
 
       <AnalystTracksView />
-    </section>
+    </div>
   );
 }
