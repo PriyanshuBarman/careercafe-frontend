@@ -8,7 +8,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <QuestionsSidebar />
       <div className="w-full">
         <DashboardHeader />
-        <main className="flex-1 px-4 sm:px-6 md:px-8">{children}</main>
+        <main className="flex-1 px-4 py-6 sm:px-6 sm:py-10 md:px-8">
+          {children}
+        </main>
       </div>
     </SidebarProvider>
   );

@@ -30,7 +30,12 @@ The landing page repository for **CareerCafe**, built with Next.js, TypeScript, 
 ├── public/                  # Static assets (images, icons, fonts)
 ├── src/
 │   ├── app/                 # Next.js App Router (pages, layouts, routes)
-│   │   ├── (root)/          # Main landing page route group
+│   │   ├── (questions-dashboard)/ # Questions dashboard route group
+│   │   │   └── questions/
+│   │   │       ├── [slug]/  # Dynamic question detail page
+│   │   │       ├── layout.tsx # Dashboard questions layout
+│   │   │       └── page.tsx # Questions dashboard entry page
+│   │   ├── (root)/          # Main page route group
 │   │   │   ├── analyst-tracks/ # Analyst tracks pages & sections
 │   │   │   ├── layout.tsx   # Root group layout (navbar, footer wrapper)
 │   │   │   └── page.tsx     # Home / Landing page entry
@@ -38,14 +43,14 @@ The landing page repository for **CareerCafe**, built with Next.js, TypeScript, 
 │   │   ├── globals.css      # Global styles and Tailwind theme variables
 │   │   ├── layout.tsx       # Top-level root layout & providers
 │   │   └── not-found.tsx    # 404 error page
-│   ├── components/          # React components
+│   ├── components/          # Shared & UI components
 │   │   ├── analyst-tracks/  # Components specific to the Analyst Tracks page
 │   │   ├── landing/         # Landing page components & feature cards
 │   │   │   └── sections/    # Specific landing page sections (Hero, Programmes, Testimonials, etc.)
 │   │   ├── layouts/         # Layout components (Navbar, Footer, NavMenu, NavigationSheet)
-│   │   ├── ui/              # Reusable shadcn / Base UI components (Button, Dialog, Sheet, etc.)
-│   │   ├── theme-provider.tsx # Theme context provider wrapper
-│   │   └── theme-toggle.tsx # Dark/Light mode toggle component
+│   │   └── ui/              # Reusable shadcn / Base UI components (Button, Dialog, Sheet, etc.)
+│   ├── features/            # Feature-specific modules
+│   │   └── questions-dashboard/ # Questions dashboard & question detail feature
 │   ├── constants/           # Static constants, site config, and navigation links
 │   ├── hooks/               # Custom React hooks
 │   └── lib/                 # Utility functions and class merging helpers (`cn`)

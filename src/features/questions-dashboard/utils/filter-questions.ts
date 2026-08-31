@@ -2,19 +2,21 @@ import type {
   AnalystDirection,
   Difficulty,
   Question,
+  QuestionType,
   Subject,
-} from "@/features/questions-dashboard/types/question";
+  Topic,
+} from "../types/question";
 
-export type FilterQuestionsParams = {
+type FilterQuestionsParams = {
   questions: Question[];
-  query?: string;
-  subjects?: Subject[];
-  difficulties?: Difficulty[];
-  type?: string;
-  topics?: string[];
-  direction?: AnalystDirection;
-  bookmarksOnly?: boolean;
-  bookmarkedIds?: string[];
+  query: string;
+  subjects: Subject[];
+  difficulties: Difficulty[];
+  type: QuestionType | null;
+  topics: Topic[];
+  direction: AnalystDirection;
+  bookmarksOnly: boolean;
+  bookmarkedIds: string[];
 };
 
 /**
@@ -22,16 +24,17 @@ export type FilterQuestionsParams = {
  */
 export function filterQuestions({
   questions,
-  query = "",
-  subjects = [],
-  difficulties = [],
+  query,
+  subjects,
+  difficulties,
   type,
-  topics = [],
+  topics,
   direction,
-  bookmarksOnly = false,
-  bookmarkedIds = [],
+  bookmarksOnly,
+  bookmarkedIds,
 }: FilterQuestionsParams): Question[] {
-  const q = query.trim().toLowerCase();
+  const normalizedQuery = query.trim().toLowerCase();
+  const normalizedTopics = topics.map((t) => t.toLowerCase());
 
   return questions.filter((question) => {
     // 1. Filter by Analyst Direction
@@ -57,32 +60,29 @@ export function filterQuestions({
       return false;
     }
 
-    // 5. Filter by question type (skip if "All Types" or empty)
-    if (type && type !== "All Types" && question.type !== type) {
+    // 5. Filter by question type (skip if not selected / null)
+    if (type && question.type !== type) {
       return false;
     }
 
     // 6. Filter by selected topics
-    if (topics.length > 0) {
-      const matchTopic = topics.some(
-        (t) => t.toLowerCase() === question.topic.toLowerCase(),
-      );
-      if (!matchTopic) {
-        return false;
-      }
+    if (
+      normalizedTopics.length > 0 &&
+      !normalizedTopics.includes(question.topic.toLowerCase())
+    ) {
+      return false;
     }
 
     // 7. Filter by search query across core fields
-    if (q) {
+    if (normalizedQuery) {
       const matches =
-        question.question.toLowerCase().includes(q) ||
-        question.shortAnswer.toLowerCase().includes(q) ||
-        question.slug.toLowerCase().includes(q) ||
-        question.topic.toLowerCase().includes(q) ||
-        question.subject.toLowerCase().includes(q) ||
-        question.category.toLowerCase().includes(q) ||
-        question.type.toLowerCase().includes(q) ||
-        question.difficulty.toLowerCase().includes(q);
+        question.question.toLowerCase().includes(normalizedQuery) ||
+        question.slug.toLowerCase().includes(normalizedQuery) ||
+        question.topic.toLowerCase().includes(normalizedQuery) ||
+        question.subject.toLowerCase().includes(normalizedQuery) ||
+        question.category.toLowerCase().includes(normalizedQuery) ||
+        question.type.toLowerCase().includes(normalizedQuery) ||
+        question.difficulty.toLowerCase().includes(normalizedQuery);
 
       if (!matches) {
         return false;

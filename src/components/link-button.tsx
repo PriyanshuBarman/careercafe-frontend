@@ -7,16 +7,19 @@ import { buttonVariants } from "./ui/button";
 
 type LinkButtonProps = {
   href: string;
-  children: React.ReactNode;
-  className?: string;
 } & VariantProps<typeof buttonVariants> &
-  Omit<React.ComponentProps<"a">, "href" | "className" | "children">;
+  Omit<React.ComponentProps<"a">, "href">;
 
 function isExternalHref(href: string) {
   return /^(https?:\/\/|mailto:|tel:)/i.test(href);
 }
 
-function LinkButton({ href, className, children, ...props }: LinkButtonProps) {
+export default function LinkButton({
+  href,
+  className,
+  children,
+  ...props
+}: LinkButtonProps) {
   const classes = cn(buttonVariants({ className, ...props }));
 
   if (isExternalHref(href)) {
@@ -33,5 +36,3 @@ function LinkButton({ href, className, children, ...props }: LinkButtonProps) {
     </Link>
   );
 }
-
-export { LinkButton };

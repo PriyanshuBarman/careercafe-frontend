@@ -1,5 +1,3 @@
-"use client";
-
 import { Edit03Icon, Target02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -27,8 +25,8 @@ import {
   FieldTitle,
 } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ANALYST_DIRECTIONS } from "@/features/questions-dashboard/data/questions";
-import type { AnalystDirection } from "@/features/questions-dashboard/types/question";
+import { ANALYST_DIRECTIONS } from "../constants/questions";
+import type { AnalystDirection } from "../types/question";
 
 const DIRECTION_DETAILS: Record<
   AnalystDirection,

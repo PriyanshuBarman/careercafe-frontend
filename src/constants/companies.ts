@@ -23,7 +23,7 @@ interface Company {
 export const COMPANIES = [
   {
     href: "#",
-    img: "./zs.png",
+    img: "./companies/zs.png",
     title: "ZS Associates",
     description: "Business / Data Analyst Preparation",
     skills: [
@@ -41,7 +41,7 @@ export const COMPANIES = [
   },
   {
     href: "#",
-    img: "./american-express.png",
+    img: "./companies/american-express.png",
     title: "American Express",
     description: "Business / Data Analyst Preparation",
     skills: [
@@ -59,7 +59,7 @@ export const COMPANIES = [
   },
   {
     href: "#",
-    img: "./goldman-sachs.png",
+    img: "./companies/goldman-sachs.png",
     title: "Goldman Sachs",
     description: "Business / Data Analyst Preparation",
     skills: [
@@ -77,7 +77,7 @@ export const COMPANIES = [
   },
   {
     href: "#",
-    img: "./deloitte.png",
+    img: "./companies/deloitte.png",
     title: "Deloitte",
     description: "Business / Data Analyst Preparation",
     skills: [

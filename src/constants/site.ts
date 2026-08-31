@@ -12,12 +12,11 @@ export const SITE_INFO = {
   shortName: "CareerCafe",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.careercafe.in",
   description: "Career Cafe - Brewing Future Analysts",
-  ogImage: "",
+  ogImage: "./screenshots/wide-light.png",
   keywords: [
-    "interview preparation",
-    "career resources",
-    "job interviews",
-    "career coaching",
+    "Careercafe",
+    "Careercafe data analytics interviews",
+    "Careercafe interview preparation",
   ],
 };
 

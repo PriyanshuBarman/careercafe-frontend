@@ -9,7 +9,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
-import { LinkButton } from "@/components/link-button";
+import LinkButton from "@/components/link-button";
 import { ANALYST_ROLES } from "@/constants/analyst-roles";
 
 export default function AnalystDirections() {

@@ -2,7 +2,6 @@ import {
   AutoConversationsIcon,
   Bookmark02Icon,
   Building03Icon,
-  Coffee02Icon,
   HelpCircleIcon,
   Home01Icon,
   MonitorIcon,
@@ -56,15 +55,14 @@ export function QuestionsSidebar() {
       <SidebarHeader className="bg-foreground dark:bg-card dark:text-foreground text-background">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="h-fit data-[slot=sidebar-menu-button]:p-1.5!">
-              <HugeiconsIcon
-                icon={Coffee02Icon}
-                strokeWidth={1.75}
-                className="text-primary shrink-0 sm:size-7!"
-              />
-              <span className="text-md tracking-tight sm:text-lg">
-                Career<span className="text-primary">Cafe</span>
-              </span>
+            <SidebarMenuButton className="data-[slot=sidebar-menu-button]:p-1.5!">
+              <div className="size-32 sm:size-36">
+                <img
+                  src="./careercafe.png"
+                  alt="CareerCafe Logo"
+                  className="aspect-square size-full object-cover"
+                />
+              </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FilterRemoveIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -13,59 +13,62 @@ import PaginationButtons from "./components/pagination-buttons";
 import QuestionsTable from "./components/questions-table";
 import SearchBar from "./components/searchbar";
 import SubjectBookmarkDificultyFilter from "./components/subject-bookmark-dificulty-filter";
-import TypeAndTopicFilter, {
-  type QuestionTypeFilter,
-} from "./components/type-and-topic-filter";
+import TypeAndTopicFilter from "./components/type-and-topic-filter";
 import { QUESTIONS } from "./data/questions";
-import type { AnalystDirection, Difficulty, Subject } from "./types/question";
+import type {
+  AnalystDirection,
+  Difficulty,
+  QuestionType,
+  Subject,
+  Topic,
+} from "./types/question";
+import { createUrlParams } from "./utils/create-url-params";
 import { filterQuestions } from "./utils/filter-questions";
+import { getInitialStateFromUrl } from "./utils/get-initial-state-from-params";
 
 const QUESTIONS_PER_PAGE = 10;
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_ANALYST_DIRECTION: AnalystDirection = "Data & BI";
 
-type Filters = Record<string, string | string[]>;
-
-export function Dashboard() {
+export default function Dashboard() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const initialQuery = searchParams.get("query") || "";
-  const initialSubjects = searchParams.getAll("subject") as Subject[];
-  const initialDifficulties = searchParams.getAll("difficulty") as Difficulty[];
-  const initialTopics = searchParams.getAll("topic");
-  const initialType =
-    (searchParams.get("type") as QuestionTypeFilter) || "All Types";
-  const initialDirection =
-    (searchParams.get("direction") as AnalystDirection) || "Data & BI";
-  const initialBookmarksOnly = searchParams.get("bookmarks") === "true";
-  const initialPage = Math.max(1, Number(searchParams.get("page")) || 1);
+  const initial = getInitialStateFromUrl(searchParams);
 
-  const [query, setQuery] = useState(initialQuery);
+  const [query, setQuery] = useState(initial.query);
   const debouncedQuery = useDebounce(query);
-  const [selectedSubjects, setSelectedSubjects] =
-    useState<Subject[]>(initialSubjects);
-  const [selectedDifficulties, setSelectedDifficulties] =
-    useState<Difficulty[]>(initialDifficulties);
-  const [selectedTopics, setSelectedTopics] = useState<string[]>(initialTopics);
-  const [selectedType, setSelectedType] =
-    useState<QuestionTypeFilter>(initialType);
-  const [selectedDirection, setSelectedDirection] =
-    useState<AnalystDirection>(initialDirection);
-  const [bookmarksOnly, setBookmarksOnly] =
-    useState<boolean>(initialBookmarksOnly);
-  const [currentPage, setCurrentPage] = useState<number>(initialPage);
-
+  const [selectedSubjects, setSelectedSubjects] = useState(initial.subjects);
+  const [selectedTopics, setSelectedTopics] = useState(initial.topics);
+  const [selectedDirection, setSelectedDirection] = useState(initial.direction);
+  const [bookmarksOnly, setBookmarksOnly] = useState(initial.bookmarksOnly);
+  const [currentPage, setCurrentPage] = useState(initial.page);
+  const [selectedType, setSelectedType] = useState<QuestionType | null>(
+    initial.type,
+  );
+  const [selectedDifficulties, setSelectedDifficulties] = useState(
+    initial.difficulties,
+  );
   const [bookmarkedIds, setBookmarkedIds] = useLocalStorage<string[]>(
-    "bookmarks-ids",
+    "bookmark-ids",
     [],
   );
+
+  const handleToggleBookmark = (questionId: string) => {
+    setBookmarkedIds((prev) =>
+      prev.includes(questionId)
+        ? prev.filter((id) => id !== questionId)
+        : [...prev, questionId],
+    );
+  };
 
   const hasActiveFilters = Boolean(
     query.trim() ||
     selectedSubjects.length > 0 ||
     selectedDifficulties.length > 0 ||
     selectedTopics.length > 0 ||
-    selectedType !== "All Types" ||
+    selectedType !== null ||
     bookmarksOnly,
   );
 
@@ -74,73 +77,42 @@ export function Dashboard() {
     setSelectedSubjects([]);
     setSelectedDifficulties([]);
     setSelectedTopics([]);
-    setSelectedType("All Types");
+    setSelectedType(null);
     setBookmarksOnly(false);
-    setCurrentPage(1);
+    setCurrentPage(DEFAULT_PAGE);
   };
 
-  const handleToggleBookmark = (id: string) => {
-    setBookmarkedIds((prev = []) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+  const handleTopicToggle = (topic: Topic) => {
+    setCurrentPage(DEFAULT_PAGE);
+    setSelectedTopics((prev) =>
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic],
     );
   };
 
-  const handleTopicToggle = (topic: string) => {
-    setCurrentPage(1);
-    if (selectedTopics.includes(topic)) {
-      setSelectedTopics(selectedTopics.filter((t) => t !== topic));
-    } else {
-      setSelectedTopics([...selectedTopics, topic]);
-    }
-  };
-
-  const handleTypeChange = (type: QuestionTypeFilter) => {
-    setCurrentPage(1);
+  const handleTypeChange = (type: QuestionType | null) => {
+    setCurrentPage(DEFAULT_PAGE);
     setSelectedType(type);
   };
 
   const handleDirectionChange = (direction: AnalystDirection) => {
-    setCurrentPage(1);
+    setCurrentPage(DEFAULT_PAGE);
     setSelectedDirection(direction);
   };
 
   const handleSubjectsChange = (subjects: Subject[]) => {
-    setCurrentPage(1);
+    setCurrentPage(DEFAULT_PAGE);
     setSelectedSubjects(subjects);
   };
 
   const handleDifficultiesChange = (difficulties: Difficulty[]) => {
-    setCurrentPage(1);
+    setCurrentPage(DEFAULT_PAGE);
     setSelectedDifficulties(difficulties);
   };
 
   const handleQueryChange = (newQuery: string) => {
-    setCurrentPage(1);
+    setCurrentPage(DEFAULT_PAGE);
     setQuery(newQuery);
   };
-
-  const updateUrlParams = useCallback(
-    (filters: Filters) => {
-      const params = new URLSearchParams();
-
-      Object.entries(filters).forEach(([key, value]) => {
-        if (!value) return;
-
-        if (Array.isArray(value)) {
-          value.forEach((item) => {
-            if (item) params.append(key, String(item));
-          });
-        } else if (typeof value === "string" && value.trim()) {
-          params.set(key, value.trim());
-        }
-      });
-
-      const queryString = params.toString();
-      const newParams = queryString ? `${pathname}?${queryString}` : pathname;
-      router.replace(newParams, { scroll: false });
-    },
-    [pathname, router],
-  );
 
   const filteredQuestions = filterQuestions({
     questions: QUESTIONS,
@@ -157,38 +129,44 @@ export function Dashboard() {
   const totalQuestions = filteredQuestions.length;
   const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE);
   const safeCurrentPage =
-    totalPages > 0 ? Math.min(currentPage, totalPages) : 1;
+    totalPages > 0 ? Math.min(currentPage, totalPages) : DEFAULT_PAGE;
 
   const paginatedQuestions = filteredQuestions.slice(
     (safeCurrentPage - 1) * QUESTIONS_PER_PAGE,
     safeCurrentPage * QUESTIONS_PER_PAGE,
   );
 
+  // Sync filter state with URL
   useEffect(() => {
-    updateUrlParams({
-      direction: selectedDirection,
+    const params = createUrlParams({
       query: debouncedQuery,
-      subject: selectedSubjects,
-      difficulty: selectedDifficulties,
-      type: selectedType !== "All Types" ? selectedType : "",
-      topic: selectedTopics,
-      bookmarks: bookmarksOnly ? "true" : "",
-      page: safeCurrentPage > 1 ? String(safeCurrentPage) : "",
+      direction: selectedDirection,
+      type: selectedType,
+      subjects: selectedSubjects,
+      difficulties: selectedDifficulties,
+      topics: selectedTopics,
+      bookmarksOnly,
+      page: safeCurrentPage > DEFAULT_PAGE ? safeCurrentPage : null,
     });
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+    router.replace(newUrl, { scroll: false });
   }, [
-    selectedDirection,
     debouncedQuery,
+    selectedDirection,
+    selectedType,
     selectedSubjects,
     selectedDifficulties,
-    selectedType,
     selectedTopics,
     bookmarksOnly,
     safeCurrentPage,
-    updateUrlParams,
+    pathname,
+    router,
   ]);
 
   return (
-    <div className="mt-12 flex w-full flex-col-reverse gap-8 lg:flex-row">
+    <div className="flex w-full flex-col-reverse gap-8 lg:flex-row">
       {/* 1st Column: 75% on desktop, 100% on mobile */}
       <div className="w-full space-y-4 sm:space-y-8 lg:w-3/4">
         <TypeAndTopicFilter
@@ -200,7 +178,7 @@ export function Dashboard() {
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <SearchBar query={query} onQueryChange={handleQueryChange} />
-          <div className="flex items-center gap-2 overflow-x-auto p-0.5">
+          <div className="flex items-center gap-2 overflow-x-auto p-1">
             <SubjectBookmarkDificultyFilter
               selectedSubjects={selectedSubjects}
               onSubjectsChange={handleSubjectsChange}
@@ -234,7 +212,7 @@ export function Dashboard() {
           currentPage={safeCurrentPage}
           totalPages={totalPages}
           totalQuestions={totalQuestions}
-          questionsPerPage={QUESTIONS_PER_PAGE}
+          itemsPerPage={QUESTIONS_PER_PAGE}
           onPageChange={setCurrentPage}
         />
       </div>

@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Briefcase02Icon,
   ChartAnalysisIcon,
@@ -8,37 +6,53 @@ import {
   User03Icon,
   XIcon,
 } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { QuestionType } from "@/features/questions-dashboard/types/question";
+import { TOPICS } from "../constants/questions";
+import type { QuestionType, Topic } from "../types/question";
 
-export type QuestionTypeFilter = "All Types" | QuestionType;
+type QuestionTypeOption = {
+  icon: IconSvgElement;
+  name: QuestionType | "All Types";
+  value: QuestionType | null;
+};
 
-export const QUESTION_TYPES = [
-  { icon: DashboardSquare01Icon, name: "All Types" as const },
-  { icon: Briefcase02Icon, name: "Case Study" as const },
-  { icon: ChartAnalysisIcon, name: "Guesstimate" as const },
-  { icon: Presentation01Icon, name: "Business/ Strategy" as const },
-  { icon: User03Icon, name: "Fit & Behavioural" as const },
-] as const;
-
-export const QUESTION_TOPICS = [
-  "Market Sizing",
-  "Profitability",
-  "Growth & Pricing",
-  "Root Cause Analysis",
-  "Data Interpretation",
-  "Behavioural",
-] as const;
+const QUESTION_TYPES = [
+  {
+    icon: DashboardSquare01Icon,
+    name: "All Types",
+    value: null,
+  },
+  {
+    icon: Briefcase02Icon,
+    name: "Case Study",
+    value: "Case Study",
+  },
+  {
+    icon: ChartAnalysisIcon,
+    name: "Guesstimate",
+    value: "Guesstimate",
+  },
+  {
+    icon: Presentation01Icon,
+    name: "Business/ Strategy",
+    value: "Business/ Strategy",
+  },
+  {
+    icon: User03Icon,
+    name: "Fit & Behavioural",
+    value: "Fit & Behavioural",
+  },
+] as const satisfies readonly QuestionTypeOption[];
 
 type TypeAndTopicFilterProps = {
-  selectedType: QuestionTypeFilter;
-  onTypeChange: (type: QuestionTypeFilter) => void;
-  selectedTopics: string[];
-  onTopicToggle: (topic: string) => void;
+  selectedType: QuestionType | null;
+  onTypeChange: (type: QuestionType | null) => void;
+  selectedTopics: Topic[];
+  onTopicToggle: (topic: Topic) => void;
 };
 
 export default function TypeAndTopicFilter({
@@ -52,13 +66,13 @@ export default function TypeAndTopicFilter({
       {/* Question Types Tabs */}
       <div className="flex items-center overflow-x-auto border-b sm:flex-wrap sm:overflow-visible">
         {QUESTION_TYPES.map((type) => {
-          const isActive = selectedType === type.name;
+          const isActive = selectedType === type.value;
 
           return (
             <Button
               key={type.name}
               variant="ghost"
-              onClick={() => onTypeChange(type.name)}
+              onClick={() => onTypeChange(type.value)}
               className={cn(
                 "text-muted-foreground hover:text-primary relative shrink-0 text-xs hover:bg-transparent sm:flex-1 sm:gap-3 sm:text-sm",
                 isActive && "text-primary font-semibold",
@@ -72,7 +86,7 @@ export default function TypeAndTopicFilter({
               <span className="whitespace-nowrap">{type.name}</span>
               {isActive && (
                 <motion.div
-                  layoutId="active-question-type-border-flex"
+                  layoutId="active-question-type-border"
                   className="bg-primary absolute inset-x-0 -bottom-px h-0.75 rounded-full"
                   transition={{
                     type: "spring",
@@ -88,9 +102,9 @@ export default function TypeAndTopicFilter({
 
       {/* Topic Pills */}
       <div className="mt-4 flex flex-col gap-2 sm:gap-2">
-        <span className="pl-1 text-xs font-medium sm:text-sm">TOPICS</span>
-        <div className="flex gap-2 overflow-x-auto p-0.5 sm:flex-wrap sm:gap-3">
-          {QUESTION_TOPICS.map((topic) => {
+        <span className="text-xs font-medium sm:pl-2 sm:text-sm">TOPICS</span>
+        <div className="flex gap-2 overflow-x-auto sm:flex-wrap sm:gap-3 sm:p-1">
+          {TOPICS.map((topic) => {
             const isActive = selectedTopics.includes(topic);
 
             return (

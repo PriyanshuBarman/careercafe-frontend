@@ -9,7 +9,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { LinkButton } from "@/components/link-button";
+import LinkButton from "@/components/link-button";
 
 export const metadata: Metadata = {
   title: "Page Not Found",

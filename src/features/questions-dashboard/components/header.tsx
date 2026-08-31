@@ -22,7 +22,7 @@ export default function DashboardHeader() {
           <Logo />
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle enableHotKey size="icon-lg" variant="ghost" />
 
           <Button size="icon-lg" variant="ghost" aria-label="Notifications">
@@ -30,8 +30,8 @@ export default function DashboardHeader() {
           </Button>
 
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src="https://github.com/priyanshubarman.png" />
+            <AvatarFallback>PB</AvatarFallback>
           </Avatar>
         </div>
       </div>

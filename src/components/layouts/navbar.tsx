@@ -6,7 +6,7 @@ import { NavigationSheet } from "./navigation-sheet";
 
 export default function Navbar() {
   return (
-    <nav className="bg-background/10 sticky top-0 z-50 h-16 border-b backdrop-blur-sm">
+    <header className="bg-background/10 sticky top-0 z-50 h-16 border-b backdrop-blur-sm">
       <div className="mx-auto flex h-full max-w-350 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-12">
           <Logo />
@@ -35,6 +35,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }
