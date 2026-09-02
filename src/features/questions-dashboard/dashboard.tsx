@@ -14,6 +14,7 @@ import QuestionsTable from "./components/questions-table";
 import SearchBar from "./components/searchbar";
 import SubjectBookmarkDificultyFilter from "./components/subject-bookmark-dificulty-filter";
 import TypeAndTopicFilter from "./components/type-and-topic-filter";
+import { DIRECTION_CONFIG } from "./constants/directions";
 import { QUESTIONS } from "./data/questions";
 import type {
   AnalystDirection,
@@ -24,9 +25,10 @@ import type {
 } from "./types/question";
 import { createUrlParams } from "./utils/create-url-params";
 import { filterQuestions } from "./utils/filter-questions";
+import { getAvailableTopics } from "./utils/get-available-topics";
 import { getInitialStateFromUrl } from "./utils/get-initial-state-from-params";
 
-const QUESTIONS_PER_PAGE = 10;
+const QUESTIONS_PER_PAGE = 20;
 export const DEFAULT_PAGE = 1;
 export const DEFAULT_ANALYST_DIRECTION: AnalystDirection = "Data & BI";
 
@@ -39,20 +41,36 @@ export default function Dashboard() {
 
   const [query, setQuery] = useState(initial.query);
   const debouncedQuery = useDebounce(query);
-  const [selectedSubjects, setSelectedSubjects] = useState(initial.subjects);
-  const [selectedTopics, setSelectedTopics] = useState(initial.topics);
-  const [selectedDirection, setSelectedDirection] = useState(initial.direction);
-  const [bookmarksOnly, setBookmarksOnly] = useState(initial.bookmarksOnly);
-  const [currentPage, setCurrentPage] = useState(initial.page);
+  const [selectedDirection, setSelectedDirection] = useState<AnalystDirection>(
+    initial.direction,
+  );
+  const [selectedSubjects, setSelectedSubjects] = useState<Subject[]>(
+    initial.subjects,
+  );
+  const [selectedTopics, setSelectedTopics] = useState<Topic[]>(initial.topics);
   const [selectedType, setSelectedType] = useState<QuestionType | null>(
     initial.type,
   );
-  const [selectedDifficulties, setSelectedDifficulties] = useState(
-    initial.difficulties,
-  );
+  const [selectedDifficulties, setSelectedDifficulties] = useState<
+    Difficulty[]
+  >(initial.difficulties);
+  const [bookmarksOnly, setBookmarksOnly] = useState(initial.bookmarksOnly);
+  const [currentPage, setCurrentPage] = useState(initial.page);
+
   const [bookmarkedIds, setBookmarkedIds] = useLocalStorage<string[]>(
     "bookmark-ids",
     [],
+  );
+
+  const directionConfig =
+    DIRECTION_CONFIG[selectedDirection] ??
+    DIRECTION_CONFIG[DEFAULT_ANALYST_DIRECTION];
+
+  const availableTypes = directionConfig.types;
+  const availableSubjects = Object.keys(directionConfig.subjects) as Subject[];
+  const availableTopics = getAvailableTopics(
+    selectedDirection,
+    selectedSubjects,
   );
 
   const handleToggleBookmark = (questionId: string) => {
@@ -97,11 +115,22 @@ export default function Dashboard() {
   const handleDirectionChange = (direction: AnalystDirection) => {
     setCurrentPage(DEFAULT_PAGE);
     setSelectedDirection(direction);
+    setSelectedType(null);
+    setSelectedSubjects([]);
+    setSelectedTopics([]);
+    setSelectedDifficulties([]);
+    setQuery("");
   };
 
   const handleSubjectsChange = (subjects: Subject[]) => {
     setCurrentPage(DEFAULT_PAGE);
     setSelectedSubjects(subjects);
+
+    // Remove selected topics that don't belong to the new subjects
+    const newAvailableTopics = getAvailableTopics(selectedDirection, subjects);
+    setSelectedTopics((prev) =>
+      prev.filter((topic) => newAvailableTopics.includes(topic)),
+    );
   };
 
   const handleDifficultiesChange = (difficulties: Difficulty[]) => {
@@ -170,8 +199,10 @@ export default function Dashboard() {
       {/* 1st Column: 75% on desktop, 100% on mobile */}
       <div className="w-full space-y-4 sm:space-y-8 lg:w-3/4">
         <TypeAndTopicFilter
+          types={availableTypes}
           selectedType={selectedType}
           onTypeChange={handleTypeChange}
+          topics={availableTopics}
           selectedTopics={selectedTopics}
           onTopicToggle={handleTopicToggle}
         />
@@ -180,6 +211,7 @@ export default function Dashboard() {
           <SearchBar query={query} onQueryChange={handleQueryChange} />
           <div className="flex items-center gap-2 overflow-x-auto p-1">
             <SubjectBookmarkDificultyFilter
+              availableSubjects={availableSubjects}
               selectedSubjects={selectedSubjects}
               onSubjectsChange={handleSubjectsChange}
               selectedDifficulties={selectedDifficulties}

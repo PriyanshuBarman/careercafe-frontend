@@ -1,34 +1,39 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowLeft01Icon,
+  AlertCircleIcon,
   ArrowRight01Icon,
   ArrowUpRightIcon,
+  BookOpen01Icon,
   CodeXmlIcon,
+  DocumentCodeIcon,
+  FlashIcon,
+  HelpCircleIcon,
+  Layers01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
 import { Separator } from "@/components/ui/separator";
-import LinkButton from "@/components/link-button";
+import BackButton from "@/components/back-button";
 import QuestionBookmarkButton from "@/components/question-bookmark-button";
-import { difficultyStyles } from "@/features/questions-dashboard/components/questions-table";
 import { QUESTIONS } from "@/features/questions-dashboard/data/questions";
+import { getRelatedQuestions } from "@/features/questions-dashboard/utils/get-related-questions";
 
 type PageProps = {
   params: Promise<{
@@ -69,25 +74,16 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
   }
 
   const question = QUESTIONS[currentIndex];
-  const prevQuestion = currentIndex > 0 ? QUESTIONS[currentIndex - 1] : null;
-  const nextQuestion =
-    currentIndex < QUESTIONS.length - 1 ? QUESTIONS[currentIndex + 1] : null;
+  const relatedQuestionsList = getRelatedQuestions(question.relatedQuestions);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-10 sm:space-y-12">
-      {/* Top Bar: Back Link & Quick Nav */}
+    <div className="mx-auto max-w-3xl space-y-10 pb-12 sm:space-y-12">
+      {/* Top Bar: Back Link */}
       <div className="flex items-center justify-between gap-3">
-        <LinkButton
-          href="/questions"
-          variant="secondary"
-          className="text-xs sm:text-sm"
-        >
-          <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} />
-          Dashboard
-        </LinkButton>
+        <BackButton>Dashboard</BackButton>
 
-        {/* Previous / Next shortcuts */}
-        <div className="flex items-center gap-2">
+        {/* Previous / Next Button (currently hidden as amit sir's instruction) */}
+        {/* <div className="flex items-center gap-2">
           {prevQuestion && (
             <LinkButton
               href={`/questions/${prevQuestion.slug}`}
@@ -108,28 +104,19 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
               <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} />
             </LinkButton>
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* Main Question Section */}
-      <div className="space-y-4">
+      <div className="space-y-2">
         {/* Badges & Action Buttons */}
         <div className="flex items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline" className="text-2xs sm:p-3">
-              {question.subject}
-            </Badge>
-            <Badge variant="outline" className="text-2xs sm:p-3">
-              {question.type}
-            </Badge>
-            <Badge
-              className={cn(
-                "text-2xs capitalize sm:p-3",
-                difficultyStyles[question.difficulty],
-              )}
-            >
-              {question.difficulty}
-            </Badge>
+          <div className="text-2xs flex flex-wrap items-center gap-2 font-medium capitalize sm:text-xs">
+            <span>{question.subject}</span>
+            <span>•</span>
+            <span>{question.type}</span>
+            <span>•</span>
+            <span>{question.difficulty}</span>
           </div>
 
           <QuestionBookmarkButton size="icon-lg" questionId={question.id} />
@@ -140,7 +127,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
           {question.question}
         </h1>
 
-        {/* Applicable Tracks */}
+        {/* Relevant Tracks */}
         {question.directions && question.directions.length > 0 && (
           <p className="text-xs">
             <span className="font-medium">Relevant tracks: </span>
@@ -155,65 +142,160 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
 
       {/* Short Answer */}
       <section className="bg-cc-sage-100/50 dark:bg-cc-sage-900/25 border-cc-sage-900 space-y-2 rounded-xl border-l-2 p-4 sm:space-y-4 sm:p-6">
-        <h2 className="text-xs font-semibold tracking-wide uppercase">
-          Short answer
-        </h2>
-        <p className="text-foreground text-sm sm:text-base">
+        <div className="flex items-center gap-2">
+          <HugeiconsIcon
+            icon={FlashIcon}
+            strokeWidth={2}
+            className="text-muted-foreground size-4"
+          />
+          <h2 className="text-xs font-semibold tracking-wide uppercase">
+            Short answer
+          </h2>
+        </div>
+        <p className="text-foreground text-[0.8125rem] leading-relaxed sm:text-base">
           {question.shortAnswer}
         </p>
       </section>
 
       {/* Explanation */}
-      <section className="space-y-3">
-        <h2 className="text-xs font-semibold tracking-wide uppercase">
-          Explanation
-        </h2>
-        <div className="text-foreground/90 space-y-3 text-sm leading-relaxed whitespace-pre-line sm:text-base">
+      <section className="space-y-3 sm:space-y-4">
+        <div className="flex items-center gap-2">
+          <HugeiconsIcon
+            icon={BookOpen01Icon}
+            strokeWidth={2}
+            className="text-muted-foreground size-4"
+          />
+          <h2 className="text-xs font-semibold tracking-wide uppercase">
+            Explanation
+          </h2>
+        </div>
+        <div className="text-foreground/90 space-y-3 text-[0.8125rem] leading-relaxed whitespace-pre-line sm:text-base">
           {question.explanation}
         </div>
       </section>
 
-      {/* Common Mistakes (if available) */}
-      {question.commonMistakes && question.commonMistakes.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-xs font-semibold tracking-wide uppercase">
-            Common mistakes
-          </h2>
-          <ul className="text-muted-foreground list-inside list-decimal space-y-2 text-sm sm:text-base">
-            {question.commonMistakes.map((mistake, idx) => (
-              <li key={idx}>{mistake}</li>
-            ))}
-          </ul>
+      {/* Example */}
+      {question.example && (
+        <section className="space-y-2 sm:space-y-4">
+          <div className="flex items-center gap-2">
+            <HugeiconsIcon
+              icon={DocumentCodeIcon}
+              strokeWidth={2}
+              className="text-muted-foreground size-4"
+            />
+            <h2 className="text-xs font-semibold tracking-wide uppercase">
+              Example & Walkthrough
+            </h2>
+          </div>
+          <div className="bg-muted/40 border-border/80 text-foreground/90 overflow-x-auto rounded-xl border p-4 font-mono text-xs leading-relaxed whitespace-pre-line sm:p-6 sm:text-sm">
+            {question.example}
+          </div>
         </section>
       )}
 
       {/* Follow-Up Questions */}
       {question.followUps && question.followUps.length > 0 && (
         <section className="space-y-4">
-          <h2 className="text-xs font-semibold tracking-wide uppercase">
-            Follow-up questions
-          </h2>
-          <Accordion className="space-y-4">
-            {question.followUps.map((item, index) => {
-              return (
-                <AccordionItem
-                  key={index}
-                  className="bg-accent rounded-xl px-4 py-1 sm:px-6"
-                >
-                  <AccordionTrigger className="sm:text-md font-normal hover:no-underline">
-                    {item.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground mt-2">
-                    {item.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
+          <div className="flex items-center gap-2">
+            <HugeiconsIcon
+              icon={HelpCircleIcon}
+              strokeWidth={2}
+              className="text-muted-foreground size-4"
+            />
+            <h2 className="text-[0.8125rem] font-semibold tracking-wide uppercase">
+              Follow-up questions
+            </h2>
+          </div>
+          <Accordion className="space-y-2 sm:space-y-4">
+            {question.followUps.map((item, index) => (
+              <AccordionItem
+                key={index}
+                className="bg-accent rounded-xl px-4 py-1 sm:px-6 sm:py-2"
+              >
+                <AccordionTrigger className="sm:text-md text-[0.8125rem] font-normal hover:no-underline">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground mt-2 text-xs leading-relaxed sm:text-sm">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </section>
       )}
 
-      {/* Show SQL Playground recomendation (if subject = SQL) */}
+      {/* Common Mistakes */}
+      {question.commonMistakes && question.commonMistakes.length > 0 && (
+        <section className="space-y-3 sm:space-y-4">
+          <div className="flex items-center gap-2">
+            <HugeiconsIcon
+              icon={AlertCircleIcon}
+              strokeWidth={2}
+              className="text-muted-foreground size-4"
+            />
+            <h2 className="text-xs font-semibold tracking-wide uppercase">
+              Common mistakes
+            </h2>
+          </div>
+          <ul className="text-muted-foreground list-inside list-decimal space-y-2 text-xs sm:text-base">
+            {question.commonMistakes.map((mistake, idx) => (
+              <li key={idx} className="leading-relaxed">
+                {mistake}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Related Questions */}
+      {relatedQuestionsList.length > 0 && (
+        <section className="space-y-4">
+          <div className="flex items-center gap-2">
+            <HugeiconsIcon
+              icon={Layers01Icon}
+              strokeWidth={2}
+              className="text-muted-foreground size-4"
+            />
+            <h2 className="text-xs font-semibold tracking-wide uppercase">
+              Related Questions
+            </h2>
+          </div>
+          <ItemGroup>
+            {relatedQuestionsList.map((relQ) => (
+              <Item
+                render={<Link href={`/questions/${relQ.slug}`} replace />}
+                key={relQ.id}
+                variant="outline"
+                className="gap-4 rounded-xl p-4"
+              >
+                <ItemContent>
+                  <ItemDescription className="text-muted-foreground text-2xs flex items-center gap-2 capitalize sm:text-xs">
+                    <span>{relQ.subject}</span>
+                    <span>•</span>
+                    <span>{relQ.type}</span>
+                    <span>•</span>
+                    <span>{relQ.difficulty}</span>
+                  </ItemDescription>
+                  <ItemTitle className="text-xs font-normal sm:text-sm">
+                    {relQ.question}
+                  </ItemTitle>
+                </ItemContent>
+                <ItemActions>
+                  <Button
+                    size="icon-lg"
+                    variant="ghost"
+                    className="text-muted-foreground rounded-full"
+                  >
+                    <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} />
+                  </Button>
+                </ItemActions>
+              </Item>
+            ))}
+          </ItemGroup>
+        </section>
+      )}
+
+      {/* SQL Playground recommendation (at the very last if subject = SQL) */}
       {question.subject === "SQL" && (
         <Item variant="outline" className="gap-4 rounded-xl">
           <ItemMedia variant="icon">
@@ -242,8 +324,8 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
 
       <Separator />
 
-      {/* Bottom Navigation */}
-      <div className="flex items-center justify-between gap-4 pt-2">
+      {/* Bottom Navigation (currently hidden as amit sir's instruction) */}
+      {/* <div className="flex items-center justify-between gap-4 pt-2">
         {prevQuestion && (
           <LinkButton
             variant="ghost"
@@ -269,7 +351,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
             <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} />
           </LinkButton>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

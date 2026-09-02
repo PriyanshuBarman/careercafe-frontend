@@ -4,10 +4,11 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import SelectPopover from "@/components/select-popover";
-import { DIFFICULTY_LEVELS, SUBJECTS } from "../constants/questions";
+import { DIFFICULTY_LEVELS } from "../constants/questions";
 import type { Difficulty, Subject } from "../types/question";
 
-type SubjectBookmarkDificultyFilterFilterProps = {
+type SubjectBookmarkDifficultyFilterProps = {
+  availableSubjects: readonly Subject[];
   selectedSubjects: Subject[];
   onSubjectsChange: (subjects: Subject[]) => void;
   selectedDifficulties: Difficulty[];
@@ -18,6 +19,7 @@ type SubjectBookmarkDificultyFilterFilterProps = {
 };
 
 export default function SubjectBookmarkDificultyFilter({
+  availableSubjects,
   selectedSubjects,
   onSubjectsChange,
   selectedDifficulties,
@@ -25,7 +27,7 @@ export default function SubjectBookmarkDificultyFilter({
   bookmarksOnly,
   onBookmarksOnlyChange,
   hasBookmarks,
-}: SubjectBookmarkDificultyFilterFilterProps) {
+}: SubjectBookmarkDifficultyFilterProps) {
   const handleSubjectToggle = (subject: Subject) => {
     if (selectedSubjects.includes(subject)) {
       onSubjectsChange(selectedSubjects.filter((s) => s !== subject));
@@ -66,7 +68,7 @@ export default function SubjectBookmarkDificultyFilter({
 
       <SelectPopover
         buttonLabel="Subject"
-        options={SUBJECTS}
+        options={availableSubjects}
         selectedItems={selectedSubjects}
         onCheckedChange={handleSubjectToggle}
       />

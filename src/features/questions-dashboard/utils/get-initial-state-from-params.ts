@@ -1,7 +1,7 @@
 import type { ReadonlyURLSearchParams } from "next/navigation";
 
+import { ANALYST_DIRECTIONS } from "../constants/directions";
 import {
-  ANALYST_DIRECTIONS,
   DIFFICULTY_LEVELS,
   QUESTION_TYPES,
   SUBJECTS,

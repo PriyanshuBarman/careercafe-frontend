@@ -1,14 +1,15 @@
 import type {
   ACCESS_TYPES,
-  ANALYST_DIRECTIONS,
   CATEGORIES,
   DIFFICULTY_LEVELS,
   QUESTION_TYPES,
   SUBJECTS,
   TOPICS,
 } from "../constants/questions";
+import type { AnalystDirection } from "./direction";
 
-export type AnalystDirection = (typeof ANALYST_DIRECTIONS)[number];
+export type { AnalystDirection } from "./direction";
+
 export type QuestionType = (typeof QUESTION_TYPES)[number];
 export type Category = (typeof CATEGORIES)[number];
 export type Access = (typeof ACCESS_TYPES)[number];
@@ -34,6 +35,8 @@ export interface Question {
   access: Access;
   shortAnswer: string;
   explanation: string;
+  example: string;
   followUps: FollowUp[];
   commonMistakes?: string[];
+  relatedQuestions?: string[];
 }

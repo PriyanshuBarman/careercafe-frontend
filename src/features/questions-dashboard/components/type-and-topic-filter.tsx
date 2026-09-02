@@ -1,6 +1,7 @@
 import {
   Briefcase02Icon,
   ChartAnalysisIcon,
+  CodeXmlIcon,
   DashboardSquare01Icon,
   Presentation01Icon,
   User03Icon,
@@ -11,61 +12,55 @@ import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { TOPICS } from "../constants/questions";
 import type { QuestionType, Topic } from "../types/question";
 
-type QuestionTypeOption = {
-  icon: IconSvgElement;
-  name: QuestionType | "All Types";
-  value: QuestionType | null;
+const QUESTION_TYPE_ICONS: Record<string, IconSvgElement> = {
+  "All Types": DashboardSquare01Icon,
+  "Case Study": Briefcase02Icon,
+  "Business Case": Briefcase02Icon,
+  Guesstimate: ChartAnalysisIcon,
+  "Business / Strategy": Presentation01Icon,
+  "Fit & Behavioural": User03Icon,
+  Coding: CodeXmlIcon,
+  Technical: CodeXmlIcon,
+  "Data Interpretation": ChartAnalysisIcon,
 };
 
-const QUESTION_TYPES = [
-  {
-    icon: DashboardSquare01Icon,
-    name: "All Types",
-    value: null,
-  },
-  {
-    icon: Briefcase02Icon,
-    name: "Case Study",
-    value: "Case Study",
-  },
-  {
-    icon: ChartAnalysisIcon,
-    name: "Guesstimate",
-    value: "Guesstimate",
-  },
-  {
-    icon: Presentation01Icon,
-    name: "Business/ Strategy",
-    value: "Business/ Strategy",
-  },
-  {
-    icon: User03Icon,
-    name: "Fit & Behavioural",
-    value: "Fit & Behavioural",
-  },
-] as const satisfies readonly QuestionTypeOption[];
-
 type TypeAndTopicFilterProps = {
+  types: readonly QuestionType[];
   selectedType: QuestionType | null;
   onTypeChange: (type: QuestionType | null) => void;
+  topics: readonly Topic[];
   selectedTopics: Topic[];
   onTopicToggle: (topic: Topic) => void;
 };
 
 export default function TypeAndTopicFilter({
+  types,
   selectedType,
   onTypeChange,
+  topics,
   selectedTopics,
   onTopicToggle,
 }: TypeAndTopicFilterProps) {
+  const typeOptions = [
+    {
+      icon: DashboardSquare01Icon,
+      name: "All Types",
+      value: null,
+    },
+    ...types.map((typeName) => ({
+      icon: QUESTION_TYPE_ICONS[typeName] ?? DashboardSquare01Icon,
+      name: typeName,
+      value: typeName,
+    })),
+  ];
+
   return (
     <div className="bg-card rounded-xl border p-4">
-      {/* Question Types Tabs */}
+      {/* Question Types Tabs (Single-Select) */}
       <div className="flex items-center overflow-x-auto border-b sm:flex-wrap sm:overflow-visible">
-        {QUESTION_TYPES.map((type) => {
+        {typeOptions.map((type) => {
           const isActive = selectedType === type.value;
 
           return (
@@ -100,30 +95,32 @@ export default function TypeAndTopicFilter({
         })}
       </div>
 
-      {/* Topic Pills */}
-      <div className="mt-4 flex flex-col gap-2 sm:gap-2">
-        <span className="text-xs font-medium sm:pl-2 sm:text-sm">TOPICS</span>
-        <div className="flex gap-2 overflow-x-auto sm:flex-wrap sm:gap-3 sm:p-1">
-          {TOPICS.map((topic) => {
-            const isActive = selectedTopics.includes(topic);
+      {/* Topic Pills (Multi-Select) */}
+      {topics.length > 0 && (
+        <div className="mt-4 flex flex-col gap-2 sm:gap-2">
+          <span className="text-xs font-medium sm:pl-2 sm:text-sm">TOPICS</span>
+          <div className="flex gap-2 overflow-x-auto sm:flex-wrap sm:gap-3 sm:p-1">
+            {topics.map((topic) => {
+              const isActive = selectedTopics.includes(topic);
 
-            return (
-              <Button
-                key={topic}
-                variant="secondary"
-                onClick={() => onTopicToggle(topic)}
-                className={cn(
-                  "text-2xs transition-all sm:p-4 sm:text-xs",
-                  isActive && "ring-primary text-primary font-medium ring",
-                )}
-              >
-                {topic}
-                {isActive && <HugeiconsIcon icon={XIcon} strokeWidth={2} />}
-              </Button>
-            );
-          })}
+              return (
+                <Button
+                  key={topic}
+                  variant="secondary"
+                  onClick={() => onTopicToggle(topic)}
+                  className={cn(
+                    "text-2xs transition-all sm:p-4 sm:text-xs",
+                    isActive && "ring-primary text-primary font-medium ring",
+                  )}
+                >
+                  {topic}
+                  {isActive && <HugeiconsIcon icon={XIcon} strokeWidth={2} />}
+                </Button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

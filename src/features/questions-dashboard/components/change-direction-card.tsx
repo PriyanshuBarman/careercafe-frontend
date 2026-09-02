@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { Edit03Icon, Target02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -25,8 +26,8 @@ import {
   FieldTitle,
 } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ANALYST_DIRECTIONS } from "../constants/questions";
-import type { AnalystDirection } from "../types/question";
+import { ANALYST_DIRECTIONS } from "../constants/directions";
+import type { AnalystDirection } from "../types/direction";
 
 const DIRECTION_DETAILS: Record<
   AnalystDirection,
@@ -60,6 +61,7 @@ export default function ChangeDirectionCard({
   selectedDirection,
   onDirectionChange,
 }: ChangeDirectionCardProps) {
+  const baseId = useId();
   const currentDetails =
     DIRECTION_DETAILS[selectedDirection] ?? DIRECTION_DETAILS["Data & BI"];
 
@@ -116,7 +118,7 @@ export default function ChangeDirectionCard({
               className="max-w-sm"
             >
               {ANALYST_DIRECTIONS.map((direction) => {
-                const id = `direction-${direction.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+                const id = `${baseId}-${direction}`;
                 const details = DIRECTION_DETAILS[direction];
 
                 return (
