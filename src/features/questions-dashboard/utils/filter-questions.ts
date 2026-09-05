@@ -2,7 +2,6 @@ import type {
   AnalystDirection,
   Difficulty,
   Question,
-  QuestionType,
   Subject,
   Topic,
 } from "../types/question";
@@ -10,9 +9,8 @@ import type {
 type FilterQuestionsParams = {
   questions: Question[];
   query: string;
-  subjects: Subject[];
+  subject: Subject | null;
   difficulties: Difficulty[];
-  type: QuestionType | null;
   topics: Topic[];
   direction: AnalystDirection;
   bookmarksOnly: boolean;
@@ -20,14 +18,13 @@ type FilterQuestionsParams = {
 };
 
 /**
- * Filters questions by direction, search query, subjects, difficulties, question type, topics, and bookmarks.
+ * Filters questions by direction, search query, subject, difficulties, topics, and bookmarks.
  */
 export function filterQuestions({
   questions,
   query,
-  subjects,
+  subject,
   difficulties,
-  type,
   topics,
   direction,
   bookmarksOnly,
@@ -47,8 +44,8 @@ export function filterQuestions({
       return false;
     }
 
-    // 3. Filter by selected subjects
-    if (subjects.length > 0 && !subjects.includes(question.subject)) {
+    // 3. Filter by selected subject (null means all subjects)
+    if (subject && question.subject !== subject) {
       return false;
     }
 
@@ -57,11 +54,6 @@ export function filterQuestions({
       difficulties.length > 0 &&
       !difficulties.includes(question.difficulty)
     ) {
-      return false;
-    }
-
-    // 5. Filter by question type (skip if not selected / null)
-    if (type && question.type !== type) {
       return false;
     }
 

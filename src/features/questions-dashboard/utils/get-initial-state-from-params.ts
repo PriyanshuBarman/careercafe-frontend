@@ -1,17 +1,14 @@
 import type { ReadonlyURLSearchParams } from "next/navigation";
 
-import { ANALYST_DIRECTIONS } from "../constants/directions";
 import {
-  DIFFICULTY_LEVELS,
-  QUESTION_TYPES,
-  SUBJECTS,
-  TOPICS,
-} from "../constants/questions";
-import { DEFAULT_ANALYST_DIRECTION, DEFAULT_PAGE } from "../dashboard";
+  DEFAULT_ANALYST_DIRECTION,
+  DEFAULT_PAGE,
+} from "../components/dashboard";
+import { ANALYST_DIRECTIONS } from "../constants/directions";
+import { DIFFICULTY_LEVELS, SUBJECTS, TOPICS } from "../constants/questions";
 import type {
   AnalystDirection,
   Difficulty,
-  QuestionType,
   Subject,
   Topic,
 } from "../types/question";
@@ -23,8 +20,9 @@ import type {
  * - Ignores invalid values.
  */
 export function getInitialStateFromUrl(searchParams: ReadonlyURLSearchParams) {
-  const type = searchParams.get("type");
   const direction = searchParams.get("direction");
+  const subjectParam =
+    searchParams.get("subject") || searchParams.get("subjects");
 
   const getParamValuesAsArray = (param: string) =>
     searchParams.get(param)?.split(",") || [];
@@ -32,9 +30,10 @@ export function getInitialStateFromUrl(searchParams: ReadonlyURLSearchParams) {
   return {
     query: searchParams.get("query")?.trim() || "",
 
-    subjects: getParamValuesAsArray("subjects").filter(
-      (subject): subject is Subject => SUBJECTS.includes(subject as Subject),
-    ),
+    subject:
+      subjectParam && SUBJECTS.includes(subjectParam as Subject)
+        ? (subjectParam as Subject)
+        : null,
 
     difficulties: getParamValuesAsArray("difficulties").filter(
       (difficulty): difficulty is Difficulty =>
@@ -44,11 +43,6 @@ export function getInitialStateFromUrl(searchParams: ReadonlyURLSearchParams) {
     topics: getParamValuesAsArray("topics").filter((topic): topic is Topic =>
       TOPICS.includes(topic as Topic),
     ),
-
-    type:
-      type && QUESTION_TYPES.includes(type as QuestionType)
-        ? (type as QuestionType)
-        : null,
 
     direction:
       direction && ANALYST_DIRECTIONS.includes(direction as AnalystDirection)

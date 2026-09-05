@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import { Edit03Icon, Target02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -61,16 +61,18 @@ export default function ChangeDirectionCard({
   selectedDirection,
   onDirectionChange,
 }: ChangeDirectionCardProps) {
+  const [open, setOpen] = useState(false);
   const baseId = useId();
   const currentDetails =
     DIRECTION_DETAILS[selectedDirection] ?? DIRECTION_DETAILS["Data & BI"];
 
-  const handleValueChange = (val: string) => {
-    onDirectionChange(val as AnalystDirection);
+  const handleSelectDirection = (direction: AnalystDirection) => {
+    onDirectionChange(direction);
+    setOpen(false);
   };
 
   return (
-    <Card className="h-fit w-full">
+    <Card className="sticky h-fit w-full lg:top-26">
       <CardContent className="space-y-3">
         <div className="flex items-center gap-2 sm:gap-4">
           <HugeiconsIcon
@@ -93,7 +95,7 @@ export default function ChangeDirectionCard({
       </CardContent>
 
       <CardFooter>
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger
             render={
               <Button className="w-full text-xs sm:text-sm">
@@ -114,7 +116,9 @@ export default function ChangeDirectionCard({
 
             <RadioGroup
               value={selectedDirection}
-              onValueChange={handleValueChange}
+              onValueChange={(val) =>
+                handleSelectDirection(val as AnalystDirection)
+              }
               className="max-w-sm"
             >
               {ANALYST_DIRECTIONS.map((direction) => {
@@ -122,7 +126,12 @@ export default function ChangeDirectionCard({
                 const details = DIRECTION_DETAILS[direction];
 
                 return (
-                  <FieldLabel key={direction} htmlFor={id}>
+                  <FieldLabel
+                    key={direction}
+                    htmlFor={id}
+                    className="cursor-pointer"
+                    onClick={() => handleSelectDirection(direction)}
+                  >
                     <Field orientation="horizontal">
                       <FieldContent>
                         <FieldTitle className="text-xs sm:text-sm">

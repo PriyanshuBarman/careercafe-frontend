@@ -8,25 +8,24 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useLocalStorage } from "@/hooks/use-localstorage";
 import { Button } from "@/components/ui/button";
-import ChangeDirectionCard from "./components/change-direction-card";
-import PaginationButtons from "./components/pagination-buttons";
-import QuestionsTable from "./components/questions-table";
-import SearchBar from "./components/searchbar";
-import SubjectBookmarkDificultyFilter from "./components/subject-bookmark-dificulty-filter";
-import TypeAndTopicFilter from "./components/type-and-topic-filter";
-import { DIRECTION_CONFIG } from "./constants/directions";
-import { QUESTIONS } from "./data/questions";
+import { DIRECTION_CONFIG } from "../constants/directions";
+import { QUESTIONS } from "../data/questions";
 import type {
   AnalystDirection,
   Difficulty,
-  QuestionType,
   Subject,
   Topic,
-} from "./types/question";
-import { createUrlParams } from "./utils/create-url-params";
-import { filterQuestions } from "./utils/filter-questions";
-import { getAvailableTopics } from "./utils/get-available-topics";
-import { getInitialStateFromUrl } from "./utils/get-initial-state-from-params";
+} from "../types/question";
+import { createUrlParams } from "../utils/create-url-params";
+import { filterQuestions } from "../utils/filter-questions";
+import { getAvailableTopics } from "../utils/get-available-topics";
+import { getInitialStateFromUrl } from "../utils/get-initial-state-from-params";
+import ChangeDirectionCard from "./change-direction-card";
+import DifficultyBookmarkFilter from "./difficulty-bookmark-filter";
+import PaginationButtons from "./pagination-buttons";
+import QuestionsTable from "./questions-table";
+import SearchBar from "./searchbar";
+import SubjectTopicFilterCard from "./subject-topic-filter-card";
 
 const QUESTIONS_PER_PAGE = 20;
 export const DEFAULT_PAGE = 1;
@@ -44,13 +43,10 @@ export default function Dashboard() {
   const [selectedDirection, setSelectedDirection] = useState<AnalystDirection>(
     initial.direction,
   );
-  const [selectedSubjects, setSelectedSubjects] = useState<Subject[]>(
-    initial.subjects,
+  const [selectedSubject, setSelectedSubject] = useState<Subject | null>(
+    initial.subject,
   );
   const [selectedTopics, setSelectedTopics] = useState<Topic[]>(initial.topics);
-  const [selectedType, setSelectedType] = useState<QuestionType | null>(
-    initial.type,
-  );
   const [selectedDifficulties, setSelectedDifficulties] = useState<
     Difficulty[]
   >(initial.difficulties);
@@ -66,11 +62,10 @@ export default function Dashboard() {
     DIRECTION_CONFIG[selectedDirection] ??
     DIRECTION_CONFIG[DEFAULT_ANALYST_DIRECTION];
 
-  const availableTypes = directionConfig.types;
   const availableSubjects = Object.keys(directionConfig.subjects) as Subject[];
   const availableTopics = getAvailableTopics(
     selectedDirection,
-    selectedSubjects,
+    selectedSubject,
   );
 
   const handleToggleBookmark = (questionId: string) => {
@@ -83,19 +78,17 @@ export default function Dashboard() {
 
   const hasActiveFilters = Boolean(
     query.trim() ||
-    selectedSubjects.length > 0 ||
+    selectedSubject !== null ||
     selectedDifficulties.length > 0 ||
     selectedTopics.length > 0 ||
-    selectedType !== null ||
     bookmarksOnly,
   );
 
   const handleClearFilters = () => {
     setQuery("");
-    setSelectedSubjects([]);
+    setSelectedSubject(null);
     setSelectedDifficulties([]);
     setSelectedTopics([]);
-    setSelectedType(null);
     setBookmarksOnly(false);
     setCurrentPage(DEFAULT_PAGE);
   };
@@ -107,27 +100,20 @@ export default function Dashboard() {
     );
   };
 
-  const handleTypeChange = (type: QuestionType | null) => {
-    setCurrentPage(DEFAULT_PAGE);
-    setSelectedType(type);
-  };
-
   const handleDirectionChange = (direction: AnalystDirection) => {
     setCurrentPage(DEFAULT_PAGE);
     setSelectedDirection(direction);
-    setSelectedType(null);
-    setSelectedSubjects([]);
+    setSelectedSubject(null);
     setSelectedTopics([]);
     setSelectedDifficulties([]);
     setQuery("");
   };
 
-  const handleSubjectsChange = (subjects: Subject[]) => {
+  const handleSubjectChange = (subject: Subject | null) => {
     setCurrentPage(DEFAULT_PAGE);
-    setSelectedSubjects(subjects);
+    setSelectedSubject(subject);
 
-    // Remove selected topics that don't belong to the new subjects
-    const newAvailableTopics = getAvailableTopics(selectedDirection, subjects);
+    const newAvailableTopics = getAvailableTopics(selectedDirection, subject);
     setSelectedTopics((prev) =>
       prev.filter((topic) => newAvailableTopics.includes(topic)),
     );
@@ -147,9 +133,8 @@ export default function Dashboard() {
     questions: QUESTIONS,
     direction: selectedDirection,
     query: debouncedQuery,
-    subjects: selectedSubjects,
+    subject: selectedSubject,
     difficulties: selectedDifficulties,
-    type: selectedType,
     topics: selectedTopics,
     bookmarksOnly,
     bookmarkedIds,
@@ -170,8 +155,7 @@ export default function Dashboard() {
     const params = createUrlParams({
       query: debouncedQuery,
       direction: selectedDirection,
-      type: selectedType,
-      subjects: selectedSubjects,
+      subject: selectedSubject,
       difficulties: selectedDifficulties,
       topics: selectedTopics,
       bookmarksOnly,
@@ -184,8 +168,7 @@ export default function Dashboard() {
   }, [
     debouncedQuery,
     selectedDirection,
-    selectedType,
-    selectedSubjects,
+    selectedSubject,
     selectedDifficulties,
     selectedTopics,
     bookmarksOnly,
@@ -198,10 +181,10 @@ export default function Dashboard() {
     <div className="flex w-full flex-col-reverse gap-8 lg:flex-row">
       {/* 1st Column: 75% on desktop, 100% on mobile */}
       <div className="w-full space-y-4 sm:space-y-8 lg:w-3/4">
-        <TypeAndTopicFilter
-          types={availableTypes}
-          selectedType={selectedType}
-          onTypeChange={handleTypeChange}
+        <SubjectTopicFilterCard
+          subjects={availableSubjects}
+          selectedSubject={selectedSubject}
+          onSubjectChange={handleSubjectChange}
           topics={availableTopics}
           selectedTopics={selectedTopics}
           onTopicToggle={handleTopicToggle}
@@ -210,10 +193,7 @@ export default function Dashboard() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <SearchBar query={query} onQueryChange={handleQueryChange} />
           <div className="flex items-center gap-2 overflow-x-auto p-1">
-            <SubjectBookmarkDificultyFilter
-              availableSubjects={availableSubjects}
-              selectedSubjects={selectedSubjects}
-              onSubjectsChange={handleSubjectsChange}
+            <DifficultyBookmarkFilter
               selectedDifficulties={selectedDifficulties}
               onDifficultiesChange={handleDifficultiesChange}
               hasBookmarks={bookmarkedIds.length > 0}

@@ -143,11 +143,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
       {/* Short Answer */}
       <section className="bg-cc-sage-100/50 dark:bg-cc-sage-900/25 border-cc-sage-900 space-y-2 rounded-xl border-l-2 p-4 sm:space-y-4 sm:p-6">
         <div className="flex items-center gap-2">
-          <HugeiconsIcon
-            icon={FlashIcon}
-            strokeWidth={2}
-            className="text-muted-foreground size-4"
-          />
+          <HugeiconsIcon icon={FlashIcon} strokeWidth={2} className="size-4" />
           <h2 className="text-xs font-semibold tracking-wide uppercase">
             Short answer
           </h2>
@@ -163,7 +159,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
           <HugeiconsIcon
             icon={BookOpen01Icon}
             strokeWidth={2}
-            className="text-muted-foreground size-4"
+            className="size-4"
           />
           <h2 className="text-xs font-semibold tracking-wide uppercase">
             Explanation
@@ -181,7 +177,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
             <HugeiconsIcon
               icon={DocumentCodeIcon}
               strokeWidth={2}
-              className="text-muted-foreground size-4"
+              className="size-4"
             />
             <h2 className="text-xs font-semibold tracking-wide uppercase">
               Example & Walkthrough
@@ -200,7 +196,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
             <HugeiconsIcon
               icon={HelpCircleIcon}
               strokeWidth={2}
-              className="text-muted-foreground size-4"
+              className="size-4"
             />
             <h2 className="text-[0.8125rem] font-semibold tracking-wide uppercase">
               Follow-up questions
@@ -231,7 +227,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
             <HugeiconsIcon
               icon={AlertCircleIcon}
               strokeWidth={2}
-              className="text-muted-foreground size-4"
+              className="size-4"
             />
             <h2 className="text-xs font-semibold tracking-wide uppercase">
               Common mistakes
@@ -254,7 +250,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
             <HugeiconsIcon
               icon={Layers01Icon}
               strokeWidth={2}
-              className="text-muted-foreground size-4"
+              className="size-4"
             />
             <h2 className="text-xs font-semibold tracking-wide uppercase">
               Related Questions

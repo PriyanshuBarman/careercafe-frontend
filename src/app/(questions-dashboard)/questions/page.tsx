@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
-import Dashboard from "@/features/questions-dashboard/dashboard";
+import Dashboard from "@/features/questions-dashboard/components/dashboard";
 
 export const metadata: Metadata = {
   title: "Interview Questions",

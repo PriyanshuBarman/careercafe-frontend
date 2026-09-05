@@ -1,16 +1,12 @@
 import { Bookmark02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
 import SelectPopover from "@/components/select-popover";
 import { DIFFICULTY_LEVELS } from "../constants/questions";
-import type { Difficulty, Subject } from "../types/question";
+import type { Difficulty } from "../types/question";
 
-type SubjectBookmarkDifficultyFilterProps = {
-  availableSubjects: readonly Subject[];
-  selectedSubjects: Subject[];
-  onSubjectsChange: (subjects: Subject[]) => void;
+type DifficultyBookmarkFilterProps = {
   selectedDifficulties: Difficulty[];
   onDifficultiesChange: (difficulties: Difficulty[]) => void;
   bookmarksOnly: boolean;
@@ -18,24 +14,13 @@ type SubjectBookmarkDifficultyFilterProps = {
   hasBookmarks: boolean;
 };
 
-export default function SubjectBookmarkDificultyFilter({
-  availableSubjects,
-  selectedSubjects,
-  onSubjectsChange,
+export default function DifficultyBookmarkFilter({
   selectedDifficulties,
   onDifficultiesChange,
   bookmarksOnly,
   onBookmarksOnlyChange,
   hasBookmarks,
-}: SubjectBookmarkDifficultyFilterProps) {
-  const handleSubjectToggle = (subject: Subject) => {
-    if (selectedSubjects.includes(subject)) {
-      onSubjectsChange(selectedSubjects.filter((s) => s !== subject));
-    } else {
-      onSubjectsChange([...selectedSubjects, subject]);
-    }
-  };
-
+}: DifficultyBookmarkFilterProps) {
   const handleDifficultyToggle = (difficulty: Difficulty) => {
     if (selectedDifficulties.includes(difficulty)) {
       onDifficultiesChange(
@@ -49,29 +34,20 @@ export default function SubjectBookmarkDificultyFilter({
   return (
     <>
       {hasBookmarks && (
-        <Button
+        <Toggle
           variant="outline"
-          onClick={() => onBookmarksOnlyChange(!bookmarksOnly)}
-          className={cn(
-            "w-fit text-xs transition-all sm:h-10 sm:px-4 sm:text-sm",
-            bookmarksOnly && "ring-primary text-primary font-medium ring",
-          )}
+          pressed={bookmarksOnly}
+          onPressedChange={onBookmarksOnlyChange}
+          className="aria-pressed:ring-primary aria-pressed:text-primary aria-pressed:bg-primary/5 h-9 w-fit gap-2 text-xs aria-pressed:ring sm:h-10 sm:px-4 sm:text-sm"
         >
           <HugeiconsIcon
             strokeWidth={2}
             icon={Bookmark02Icon}
-            className={cn(bookmarksOnly && "text-primary fill-current")}
+            className="group-aria-pressed/toggle:fill-current"
           />
           Bookmarks Only
-        </Button>
+        </Toggle>
       )}
-
-      <SelectPopover
-        buttonLabel="Subject"
-        options={availableSubjects}
-        selectedItems={selectedSubjects}
-        onCheckedChange={handleSubjectToggle}
-      />
 
       <SelectPopover
         buttonLabel="Difficulty"
