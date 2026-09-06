@@ -16,9 +16,13 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
-import { CHALLENGE_METRICS, STAGES } from "@/features/b0/constants";
+import LinkButton from "@/components/link-button";
+import {
+  CHALLENGE_METRICS,
+  STAGES,
+} from "@/features/start-challenge/constants";
 
-export function LeftColumn() {
+export default function LeftColumn() {
   return (
     <div className="bg-cc-charcoal relative flex flex-col justify-between space-y-10 p-8 text-white sm:space-y-12 sm:p-10 lg:p-12">
       {/* Top Header Row */}
@@ -88,10 +92,13 @@ export function LeftColumn() {
 
         {/* CTA Buttons */}
         <div className="flex flex-wrap items-center gap-3">
-          <Button className="flex-1 p-5 text-xs text-white sm:text-sm">
+          <LinkButton
+            href="/challenges/dashcart-expansion"
+            className="flex-1 p-5 text-xs text-white sm:text-sm"
+          >
             Start challenge
             <HugeiconsIcon icon={ArrowRight02Icon} strokeWidth={2} />
-          </Button>
+          </LinkButton>
 
           <Button
             variant="outline"

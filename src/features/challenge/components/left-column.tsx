@@ -14,20 +14,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CASE_PILLS, EXHIBIT_METRICS } from "@/features/b1/constants";
+import {
+  CASE_PILLS,
+  EXHIBIT_TABLES_BY_STEP,
+} from "../../challenge/constants/left-column";
 
-export function LeftColumn() {
+type LeftColumnProps = {
+  currentStep?: number;
+};
+
+export default function LeftColumn({ currentStep = 0 }: LeftColumnProps) {
+  const currentExhibit =
+    EXHIBIT_TABLES_BY_STEP[currentStep] ?? EXHIBIT_TABLES_BY_STEP[0];
+
   return (
-    <section className="flex w-full flex-col gap-6 px-6 sm:gap-7 sm:px-8 lg:w-[40%] lg:shrink-0 lg:px-10">
+    <section className="flex w-full flex-col gap-6 px-6 sm:gap-7 sm:px-8 lg:w-[40%] lg:px-10">
       {/* Case Brief Header */}
       <div className="space-y-2">
-        <span className="text-cc-sage-900 inline-block text-xs font-semibold tracking-widest uppercase">
+        <span className="text-cc-sage-900 text-2xs inline-block font-semibold tracking-widest uppercase sm:text-xs">
           CASE BRIEF
         </span>
-        <h1 className="text-xl font-medium tracking-tight sm:text-3xl">
+        <h1 className="text-lg font-medium tracking-tight sm:text-2xl">
           DashCart&apos;s expansion decision
         </h1>
-        <p className="text-muted-foreground sm:text-md text-xs">
+        <p className="text-muted-foreground text-xs sm:text-sm">
           DashCart is a 15-minute grocery-delivery company operating in
           Bengaluru and Hyderabad. The board has approved up to ₹4.2 crore to
           enter one new market.
@@ -35,7 +45,7 @@ export function LeftColumn() {
       </div>
 
       {/* Board Question Box */}
-      <Item variant="muted" className="bg-cc-sage-100/70 p-4">
+      <Item variant="muted" className="p-4">
         <ItemContent>
           <ItemDescription className="text-2xs font-semibold tracking-wider">
             BOARD QUESTION
@@ -53,7 +63,7 @@ export function LeftColumn() {
           <Badge
             variant="secondary"
             key={pill}
-            className="text-2xs bg-cc-sage-100/70 rounded-md p-3 sm:text-xs"
+            className="text-2xs rounded-md p-3 sm:text-xs"
           >
             {pill}
           </Badge>
@@ -62,14 +72,14 @@ export function LeftColumn() {
 
       <Separator />
 
-      {/* Exhibit 01 Section */}
+      {/* Dynamic Exhibit Section */}
       <div className="space-y-4">
-        <div className="space-y-2">
-          <span className="text-cc-sage-900 text-2xs inline-block font-semibold tracking-widest sm:text-xs">
-            EXHIBIT 01
+        <div>
+          <span className="text-cc-sage-900 text-2xs inline-block font-semibold tracking-widest">
+            EXHIBIT {currentExhibit.exhibitNumber}
           </span>
-          <h2 className="text-base font-medium tracking-tight sm:text-xl">
-            Market attractiveness snapshot
+          <h2 className="text-base font-medium tracking-tight sm:text-lg">
+            {currentExhibit.title}
           </h2>
         </div>
 
@@ -78,19 +88,31 @@ export function LeftColumn() {
           <Table className="w-full text-xs sm:text-sm">
             <TableHeader className="bg-accent">
               <TableRow>
-                <TableHead className="w-[75%] px-4 py-3">Metric</TableHead>
-                <TableHead className="border-l px-4 py-3">Pune</TableHead>
+                {currentExhibit.headers.map((header, idx) => (
+                  <TableHead
+                    key={header}
+                    className={idx === 0 ? "px-4 py-3" : "border-l px-4 py-3"}
+                  >
+                    {header}
+                  </TableHead>
+                ))}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {EXHIBIT_METRICS.map((row) => (
-                <TableRow key={row.metric}>
-                  <TableCell className="px-4 py-3 whitespace-normal">
-                    {row.metric}
-                  </TableCell>
-                  <TableCell className="border-l px-4 py-3">
-                    {row.value}
-                  </TableCell>
+              {currentExhibit.rows.map((row, rowIdx) => (
+                <TableRow key={rowIdx}>
+                  {row.map((cell, cellIdx) => (
+                    <TableCell
+                      key={cellIdx}
+                      className={
+                        cellIdx === 0
+                          ? "px-4 py-3 whitespace-normal"
+                          : "border-l px-4 py-3"
+                      }
+                    >
+                      {cell}
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))}
             </TableBody>

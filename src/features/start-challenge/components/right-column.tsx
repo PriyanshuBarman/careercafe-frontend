@@ -14,9 +14,12 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
-import { TIMELINE_STEPS, WORKING_RULES } from "@/features/b0/constants";
+import {
+  TIMELINE_STEPS,
+  WORKING_RULES,
+} from "@/features/start-challenge/constants";
 
-export function RightColumn() {
+export default function RightColumn() {
   return (
     <section className="flex flex-col justify-between p-8 sm:p-10">
       {/* Header */}

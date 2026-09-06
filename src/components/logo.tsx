@@ -10,7 +10,7 @@ export default function Logo({ className }: { className?: string }) {
     >
       <div className="size-32 sm:size-38">
         <img
-          src="./careercafe.png"
+          src="/careercafe.png"
           alt="CareerCafe Logo"
           className="aspect-square size-full object-cover"
         />

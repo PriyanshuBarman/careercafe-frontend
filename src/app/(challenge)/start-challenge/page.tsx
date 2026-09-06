@@ -1,5 +1,5 @@
-import { LeftColumn } from "@/features/b0/components/left-column";
-import { RightColumn } from "@/features/b0/components/right-column";
+import LeftColumn from "@/features/start-challenge/components/left-column";
+import RightColumn from "@/features/start-challenge/components/right-column";
 
 export default function Page() {
   return (
