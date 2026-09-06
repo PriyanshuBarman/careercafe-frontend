@@ -38,7 +38,7 @@ export default function DifficultyBookmarkFilter({
           variant="outline"
           pressed={bookmarksOnly}
           onPressedChange={onBookmarksOnlyChange}
-          className="aria-pressed:ring-primary aria-pressed:text-primary aria-pressed:bg-primary/5 h-9 w-fit gap-2 text-xs aria-pressed:ring sm:h-10 sm:px-4 sm:text-sm"
+          className="aria-pressed:ring-primary aria-pressed:text-primary aria-pressed:bg-primary/5 h-9 w-fit shrink-0 gap-2 text-xs aria-pressed:ring sm:h-10 sm:px-4 sm:text-sm"
         >
           <HugeiconsIcon
             strokeWidth={2}
