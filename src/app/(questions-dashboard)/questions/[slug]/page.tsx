@@ -77,7 +77,7 @@ export default async function QuestionDetailsPage({ params }: PageProps) {
   const relatedQuestionsList = getRelatedQuestions(question.relatedQuestions);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-10 pb-12 sm:space-y-12">
+    <div className="mx-auto max-w-4xl space-y-10 pb-12 sm:space-y-12">
       {/* Top Bar: Back Link */}
       <div className="flex items-center justify-between gap-3">
         <BackButton>Dashboard</BackButton>
