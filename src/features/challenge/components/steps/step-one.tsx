@@ -64,7 +64,7 @@ export default function StepOne({ control }: StepOneProps) {
               </FieldLegend>
 
               <RadioGroup
-                value={field.value}
+                value={field.value ?? null}
                 onValueChange={field.onChange}
                 className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3"
               >
@@ -119,22 +119,28 @@ export default function StepOne({ control }: StepOneProps) {
                 onValueChange={field.onChange}
                 className="flex flex-wrap pt-2"
               >
-                {SIGNALS.map((signal) => (
-                  <Toggle
-                    key={signal.label}
-                    value={signal.label}
-                    aria-label={signal.label}
-                    variant="outline"
-                    className="aria-pressed:bg-primary aria-pressed:text-background text-2xs rounded-full px-3 sm:text-xs"
-                  >
-                    <HugeiconsIcon
-                      icon={CheckIcon}
-                      strokeWidth={2.5}
-                      className="hidden group-aria-pressed/toggle:block"
-                    />
-                    {signal.label}
-                  </Toggle>
-                ))}
+                {SIGNALS.map((signal) => {
+                  const isSelected = field.value?.includes(signal.label);
+                  const isDisabled = !isSelected && field.value?.length >= 2;
+
+                  return (
+                    <Toggle
+                      key={signal.label}
+                      value={signal.label}
+                      aria-label={signal.label}
+                      variant="outline"
+                      disabled={isDisabled}
+                      className="aria-pressed:bg-primary aria-pressed:text-background text-2xs rounded-full px-3 sm:text-xs"
+                    >
+                      <HugeiconsIcon
+                        icon={CheckIcon}
+                        strokeWidth={2.5}
+                        className="hidden group-aria-pressed/toggle:block"
+                      />
+                      {signal.label}
+                    </Toggle>
+                  );
+                })}
               </ToggleGroup>
 
               {fieldState.invalid && (
@@ -147,7 +153,7 @@ export default function StepOne({ control }: StepOneProps) {
         />
 
         <Controller
-          name="concerns"
+          name="concern"
           control={control}
           render={({ field, fieldState }) => (
             <FieldSet data-invalid={fieldState.invalid}>
@@ -156,9 +162,10 @@ export default function StepOne({ control }: StepOneProps) {
               </FieldLegend>
 
               <ToggleGroup
-                multiple
-                value={field.value}
-                onValueChange={field.onChange}
+                value={field.value ? [field.value] : []}
+                onValueChange={(values) =>
+                  field.onChange(values[0] ?? undefined)
+                }
                 className="flex flex-wrap pt-2"
               >
                 {CONCERNS.map((concern) => (

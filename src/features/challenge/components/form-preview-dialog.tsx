@@ -53,11 +53,8 @@ export default function FormPreviewDialog({
               : "—",
         },
         {
-          label: "Primary Concerns",
-          value:
-            values.concerns && values.concerns.length > 0
-              ? values.concerns.join(", ")
-              : "—",
+          label: "Primary Concern",
+          value: values.concern || "—",
         },
         {
           label: "Initial Hypothesis",
@@ -82,18 +79,41 @@ export default function FormPreviewDialog({
               ? values.strategicInitiatives.join(", ")
               : "None selected",
         },
+        {
+          label: "Initiative Not Funded",
+          value: values.unfundedInitiative || "None selected",
+        },
+        {
+          label: "Trade-off Explanation",
+          value: values.tradeoffText,
+          isTextBlock: true,
+        },
       ],
     },
     {
       title: "Step 04 · Re-evaluation",
       items: [
         {
+          label: "Strategic Decision",
+          value: values.decision || "—",
+        },
+        {
           label: "Decision Horizon",
           value: values.decisionHorizon,
         },
         {
-          label: "Decision Defense",
-          value: values.defendDecision,
+          label: "Sunk Cost Treatment (₹45L)",
+          value: values.sunkCostTreatment,
+          isTextBlock: true,
+        },
+        {
+          label: "Decision Defense & Counterargument",
+          value: values.defenceText,
+          isTextBlock: true,
+        },
+        {
+          label: "Key Assumption to Validate",
+          value: values.assumptionToValidate,
           isTextBlock: true,
         },
       ],
@@ -104,6 +124,20 @@ export default function FormPreviewDialog({
         {
           label: "Final Target Market",
           value: values.finalMarket,
+        },
+        {
+          label: "Primary Board Metric",
+          value: values.primaryBoardMetric || "—",
+        },
+        {
+          label: "CEO Memo",
+          value: values.ceoMemo,
+          isTextBlock: true,
+        },
+        {
+          label: "Reversal Condition",
+          value: values.reversalCondition,
+          isTextBlock: true,
         },
       ],
     },

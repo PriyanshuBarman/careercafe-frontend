@@ -1,3 +1,5 @@
+import type { ChallengeFormValues } from "../schemas/challenge-form-schema";
+
 export const FORM_STEPS = [
   {
     step: "01",
@@ -8,7 +10,7 @@ export const FORM_STEPS = [
   },
   {
     step: "02",
-    title: "Economics",
+    title: "Prove / Disprove",
     description:
       "Test store-level unit economics and operating cost structures",
     time: "20 Min",
@@ -37,3 +39,22 @@ export const FORM_STEPS = [
     points: "20 Points",
   },
 ];
+
+export const STEP_FIELDS: Record<number, (keyof ChallengeFormValues)[]> = {
+  0: ["city", "attractiveSignals", "concern", "hypothesis"],
+  1: ["dashCartCity"],
+  2: [
+    "entryModel",
+    "strategicInitiatives",
+    "unfundedInitiative",
+    "tradeoffText",
+  ],
+  3: [
+    "decision",
+    "decisionHorizon",
+    "sunkCostTreatment",
+    "defenceText",
+    "assumptionToValidate",
+  ],
+  4: ["finalMarket", "primaryBoardMetric", "ceoMemo", "reversalCondition"],
+};

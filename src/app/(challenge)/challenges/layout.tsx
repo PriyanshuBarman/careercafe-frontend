@@ -1,9 +1,9 @@
-import Navbar from "@/components/layouts/navbar";
+import ChallengeHeader from "@/features/challenge/components/header";
 
 export default function Applayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Navbar />
+      <ChallengeHeader />
       <main>{children}</main>
     </>
   );

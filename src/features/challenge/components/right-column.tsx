@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,17 +8,18 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import FormStepper from "../../challenge/components/form-stepper";
 import StepFive from "../../challenge/components/steps/step-five";
 import StepFour from "../../challenge/components/steps/step-four";
 import StepOne from "../../challenge/components/steps/step-one";
 import StepThree from "../../challenge/components/steps/step-three";
 import StepTwo from "../../challenge/components/steps/step-two";
-import { FORM_STEPS } from "../../challenge/constants/right-column";
+import {
+  FORM_STEPS,
+  STEP_FIELDS,
+} from "../../challenge/constants/right-column";
 import { useFormAutoSave } from "../../challenge/hooks/use-form-auto-save";
 import {
   challengeFormSchema,
@@ -32,12 +31,14 @@ const STORAGE_KEY = "careercafe_challenge_draft_v1";
 
 type RightColumnProps = {
   currentStep: number;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentStep: (step: number) => void;
+  onResetSteps?: () => void;
 };
 
 export default function RightColumn({
   currentStep,
   setCurrentStep,
+  onResetSteps,
 }: RightColumnProps) {
   const router = useRouter();
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -48,16 +49,24 @@ export default function RightColumn({
   const form = useForm<ChallengeFormValues>({
     resolver: zodResolver(challengeFormSchema),
     defaultValues: {
-      city: "Pune",
-      attractiveSignals: ["Growth"],
-      concerns: ["Competitive intensity"],
+      city: undefined,
+      attractiveSignals: [],
+      concern: undefined,
       hypothesis: "",
-      dashCartCity: "Pune",
-      entryModel: "Owned Dark Stores",
+      dashCartCity: undefined,
+      entryModel: undefined,
       strategicInitiatives: [],
-      decisionHorizon: "12 months",
-      defendDecision: "",
-      finalMarket: "Pune",
+      unfundedInitiative: undefined,
+      tradeoffText: "",
+      decision: undefined,
+      decisionHorizon: undefined,
+      sunkCostTreatment: "",
+      defenceText: "",
+      assumptionToValidate: "",
+      finalMarket: undefined,
+      primaryBoardMetric: undefined,
+      ceoMemo: "",
+      reversalCondition: "",
     },
     mode: "onChange",
   });
@@ -69,39 +78,28 @@ export default function RightColumn({
 
   const activeStep = FORM_STEPS[currentStep];
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    const currentFields = STEP_FIELDS[currentStep];
+    const isStepValid = await form.trigger(currentFields);
+    if (!isStepValid) return;
+
     if (currentStep < FORM_STEPS.length - 1) {
       saveDraft();
-      setCurrentStep((prev) => prev + 1);
+      setCurrentStep(currentStep + 1);
     }
   };
 
   const handlePrev = () => {
     if (currentStep > 0) {
       saveDraft();
-      setCurrentStep((prev) => prev - 1);
+      setCurrentStep(currentStep - 1);
     }
   };
 
   const handleReviewClick = async () => {
     saveDraft();
-    await form.trigger();
-
-    const { success, error } = challengeFormSchema.safeParse(form.getValues());
-    if (!success) {
-      const errorMessages = error.issues.map((issue) => issue.message);
-
-      toast.error("Please resolve the required fields", {
-        description: (
-          <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs">
-            {errorMessages.map((msg, index) => (
-              <li key={index}>{String(msg)}</li>
-            ))}
-          </ul>
-        ),
-      });
-      return;
-    }
+    const isValid = await form.trigger();
+    if (!isValid) return;
 
     setPreviewData(form.getValues());
     setIsPreviewOpen(true);
@@ -112,45 +110,36 @@ export default function RightColumn({
     // eslint-disable-next-line no-console
     console.log("Form submitted successfully:", previewData);
     clearDraft();
+    onResetSteps?.();
     router.push("/challenges/success");
   };
 
   return (
     <section className="flex flex-1 flex-col justify-between px-6 sm:px-8 lg:px-10">
-      <form className="flex h-full flex-col justify-between gap-8">
-        {/* Top Header & Stepper */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1.5">
-              <span className="text-cc-sage-900 text-2xs font-semibold tracking-widest uppercase sm:text-xs">
-                ROUND 01 · {activeStep.step} OF 05
-              </span>
-              <h2 className="text-xl font-medium tracking-tight sm:text-3xl sm:font-semibold">
-                {activeStep.title}
-              </h2>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-2xs p-3 sm:text-xs">
-                {activeStep.time}
-              </Badge>
-              <Badge variant="outline" className="text-2xs p-3 sm:text-xs">
-                {activeStep.points}
-              </Badge>
-            </div>
+      <form className="flex flex-col justify-between gap-8">
+        {/* Top Header */}
+        <div className="flex items-center justify-between">
+          <div className="space-y-1.5">
+            <span className="text-cc-sage-900 text-2xs font-semibold tracking-widest uppercase sm:text-xs">
+              ROUND 01 · {activeStep.step} OF 05
+            </span>
+            <h2 className="text-xl font-medium tracking-tight sm:text-2xl sm:font-semibold">
+              {activeStep.title}
+            </h2>
           </div>
 
-          <FormStepper
-            currentStep={currentStep}
-            onSelectStep={(idx) => {
-              saveDraft();
-              setCurrentStep(idx);
-            }}
-          />
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-2xs p-3 sm:text-xs">
+              {activeStep.time}
+            </Badge>
+            <Badge variant="outline" className="text-2xs p-3 sm:text-xs">
+              {activeStep.points}
+            </Badge>
+          </div>
         </div>
 
         {/* Active Step Form Fields */}
-        <div className="flex-1 py-2">
+        <div>
           {currentStep === 0 && <StepOne control={form.control} />}
           {currentStep === 1 && <StepTwo control={form.control} />}
           {currentStep === 2 && <StepThree control={form.control} />}
@@ -165,7 +154,7 @@ export default function RightColumn({
             variant="outline"
             disabled={currentStep === 0}
             onClick={handlePrev}
-            className="p-4 text-xs sm:text-sm"
+            className="p-4 text-xs sm:p-4.5 sm:text-sm"
           >
             <HugeiconsIcon strokeWidth={2} icon={ChevronLeftIcon} />
             Previous
@@ -175,7 +164,7 @@ export default function RightColumn({
             <Button
               type="button"
               onClick={handleNext}
-              className="p-4 text-xs sm:text-sm"
+              className="p-4 text-xs sm:p-4.5 sm:text-sm"
             >
               Save & Continue
               <HugeiconsIcon strokeWidth={2} icon={ChevronRightIcon} />
@@ -185,7 +174,7 @@ export default function RightColumn({
               type="button"
               variant="default"
               onClick={handleReviewClick}
-              className="p-4 text-xs sm:text-sm"
+              className="p-4 text-xs sm:p-4.5 sm:text-sm"
             >
               Review Application
               <HugeiconsIcon strokeWidth={2} icon={EyeIcon} />

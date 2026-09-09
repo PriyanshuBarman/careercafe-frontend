@@ -95,7 +95,7 @@ export default function StepTwo({ control }: StepTwoProps) {
               </FieldLegend>
 
               <RadioGroup
-                value={field.value}
+                value={field.value ?? null}
                 onValueChange={field.onChange}
                 className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3"
               >

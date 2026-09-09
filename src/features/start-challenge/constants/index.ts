@@ -1,7 +1,10 @@
 import {
-  Briefcase02Icon,
   ChartHistogramIcon,
   Clock01Icon,
+  File02Icon,
+  ShieldAlertIcon,
+  TrophyIcon,
+  UserIcon,
 } from "@hugeicons/core-free-icons";
 
 export const TIMELINE_STEPS = [
@@ -37,32 +40,45 @@ export const TIMELINE_STEPS = [
   },
 ];
 
-export const STAGES = [
-  { step: "01", label: "Hypothesis" },
-  { step: "02", label: "Economics" },
-  { step: "03", label: "Prioritisation" },
-  { step: "04", label: "Adaptability" },
-  { step: "05", label: "Communication" },
-];
-
-export const WORKING_RULES = [
-  "Built-in calculator and rough working are allowed.",
-  "No external research or AI assistance.",
-  "Future evidence reveals progressively.",
-  "Laptop recommended; mobile supported.",
-];
-
-export const CHALLENGE_METRICS = [
+export const BADGES = [
   {
     icon: Clock01Icon,
     label: "90 minutes",
   },
   {
-    icon: Briefcase02Icon,
+    icon: UserIcon,
     label: "Individual",
   },
   {
     icon: ChartHistogramIcon,
     label: "5 sections",
+  },
+  {
+    icon: TrophyIcon,
+    label: "100 Marks",
+  },
+];
+
+export const CARDS = [
+  {
+    icon: File02Icon,
+    title: "What makes this different?",
+    items: [
+      "Evolving business scenario",
+      "Realistic data and trade-offs",
+      "Tests how you think, not just what you know",
+      "No external help required",
+    ],
+  },
+  {
+    icon: ShieldAlertIcon,
+    title: "Rules & guidelines",
+    items: [
+      "Calculator and rough work allowed",
+      "No external help (internet, Al tools, etc.)",
+      "Use only the information provided",
+      "New evidence unlocks as you progress",
+      "Earlier decision checkpoints may become locked",
+    ],
   },
 ];

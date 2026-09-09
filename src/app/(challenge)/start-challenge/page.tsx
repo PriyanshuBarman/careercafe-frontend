@@ -1,11 +1,5 @@
-import LeftColumn from "@/features/start-challenge/components/left-column";
-import RightColumn from "@/features/start-challenge/components/right-column";
+import StartChallenge from "@/features/start-challenge/components/start-challenge";
 
 export default function Page() {
-  return (
-    <div className="grid h-svh lg:grid-cols-2">
-      <LeftColumn />
-      <RightColumn />
-    </div>
-  );
+  return <StartChallenge />;
 }

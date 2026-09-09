@@ -40,3 +40,15 @@ export const STRATEGIC_INITIATIVES: StrategicInitiative[] = [
     description: "₹130L | +25k capacity",
   },
 ];
+
+export const SUMMARY_TABLE = {
+  headers: [
+    "Investment",
+    "Launch",
+    "Demand",
+    "Capacity",
+    "On Time",
+    "Contribution",
+  ],
+  rows: [["₹210L/420L", "4 weeks", "130k", "160k", "90%", "₹35/order"]],
+} as const;

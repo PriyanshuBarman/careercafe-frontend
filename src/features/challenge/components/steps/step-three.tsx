@@ -23,8 +23,18 @@ import {
 } from "@/components/ui/item";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
+import {
   ENTRY_MODES,
   STRATEGIC_INITIATIVES,
+  SUMMARY_TABLE,
 } from "../../../challenge/constants/step-three";
 import { type ChallengeFormValues } from "../../../challenge/schemas/challenge-form-schema";
 
@@ -33,13 +43,14 @@ type StepThreeProps = {
 };
 
 export default function StepThree({ control }: StepThreeProps) {
-  const handleInitiativeToggle = (
+  const handleStrategicInitiativeToggle = (
     title: string,
     checked: boolean | "indeterminate",
     currentValues: string[],
     onChange: (values: string[]) => void,
   ) => {
     if (checked) {
+      if (currentValues.length >= 2) return;
       onChange([...currentValues, title]);
     } else {
       onChange(currentValues.filter((val) => val !== title));
@@ -53,12 +64,10 @@ export default function StepThree({ control }: StepThreeProps) {
           <HugeiconsIcon icon={InfoIcon} />
         </ItemMedia>
         <ItemContent>
-          <ItemTitle className="text-2xs sm:text-xs">
-            STUDENT OBJECTIVE
-          </ItemTitle>
+          <ItemTitle className="text-2xs sm:text-xs">BOARD DECISION</ItemTitle>
           <ItemDescription className="text-xs sm:text-sm">
-            Choose a working Hypothesis before full economics are available.
-            Identify what looks atractive and what is still missing.
+            Management selected Jaipur. Choose one model, optionally fund up to
+            two initiatives and review factual feasibility.
           </ItemDescription>
         </ItemContent>
       </Item>
@@ -69,12 +78,10 @@ export default function StepThree({ control }: StepThreeProps) {
           control={control}
           render={({ field, fieldState }) => (
             <FieldSet data-invalid={fieldState.invalid}>
-              <FieldLegend variant="label">
-                Which city would you investigate first?
-              </FieldLegend>
+              <FieldLegend variant="label">Choose one entry model?</FieldLegend>
 
               <RadioGroup
-                value={field.value}
+                value={field.value ?? null}
                 onValueChange={field.onChange}
                 className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3"
               >
@@ -123,30 +130,92 @@ export default function StepThree({ control }: StepThreeProps) {
                 Fund up to two strategic initiatives:
               </FieldLegend>
 
-              <div className="flex flex-col gap-2.5 pt-2">
+              <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
+                {STRATEGIC_INITIATIVES.map((initiative) => {
+                  const isChecked = field.value?.includes(initiative.title);
+                  const isDisabled =
+                    !isChecked && (field.value?.length ?? 0) >= 2;
+
+                  return (
+                    <FieldLabel
+                      key={initiative.title}
+                      htmlFor={`initiative-${initiative.title}`}
+                      className={
+                        isDisabled
+                          ? "cursor-not-allowed opacity-50"
+                          : "cursor-pointer"
+                      }
+                    >
+                      <Field
+                        orientation="horizontal"
+                        data-invalid={fieldState.invalid}
+                      >
+                        <Checkbox
+                          id={`initiative-${initiative.title}`}
+                          aria-invalid={fieldState.invalid}
+                          name={field.name}
+                          disabled={isDisabled}
+                          checked={isChecked}
+                          onCheckedChange={(checked) =>
+                            handleStrategicInitiativeToggle(
+                              initiative.title,
+                              checked,
+                              field.value || [],
+                              field.onChange,
+                            )
+                          }
+                        />
+                        <FieldContent>
+                          <FieldTitle className="text-xs sm:text-sm">
+                            {initiative.title}
+                          </FieldTitle>
+                          <FieldDescription className="text-2xs sm:text-xs">
+                            {initiative.description}
+                          </FieldDescription>
+                        </FieldContent>
+                      </Field>
+                    </FieldLabel>
+                  );
+                })}
+              </div>
+
+              {fieldState.invalid && (
+                <FieldError className="text-xs">
+                  {fieldState.error?.message}
+                </FieldError>
+              )}
+            </FieldSet>
+          )}
+        />
+
+        <Controller
+          name="unfundedInitiative"
+          control={control}
+          render={({ field, fieldState }) => (
+            <FieldSet data-invalid={fieldState.invalid}>
+              <FieldLegend variant="label">
+                Choose one initiative to not fund:
+              </FieldLegend>
+
+              <RadioGroup
+                value={field.value ?? null}
+                onValueChange={field.onChange}
+                className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2"
+              >
                 {STRATEGIC_INITIATIVES.map((initiative) => (
                   <FieldLabel
                     key={initiative.title}
-                    htmlFor={`initiative-${initiative.title}`}
+                    htmlFor={`unfunded-${initiative.title}`}
                     className="cursor-pointer"
                   >
                     <Field
                       orientation="horizontal"
                       data-invalid={fieldState.invalid}
                     >
-                      <Checkbox
-                        id={`initiative-${initiative.title}`}
+                      <RadioGroupItem
+                        id={`unfunded-${initiative.title}`}
+                        value={initiative.title}
                         aria-invalid={fieldState.invalid}
-                        name={field.name}
-                        checked={field.value?.includes(initiative.title)}
-                        onCheckedChange={(checked) =>
-                          handleInitiativeToggle(
-                            initiative.title,
-                            checked,
-                            field.value || [],
-                            field.onChange,
-                          )
-                        }
                       />
                       <FieldContent>
                         <FieldTitle className="text-xs sm:text-sm">
@@ -159,7 +228,7 @@ export default function StepThree({ control }: StepThreeProps) {
                     </Field>
                   </FieldLabel>
                 ))}
-              </div>
+              </RadioGroup>
 
               {fieldState.invalid && (
                 <FieldError className="text-xs">
@@ -169,18 +238,67 @@ export default function StepThree({ control }: StepThreeProps) {
             </FieldSet>
           )}
         />
+
+        <Controller
+          name="tradeoffText"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldContent className="flex-row justify-between">
+                <FieldLabel htmlFor={field.name}>
+                  Write your trade-off explanation
+                </FieldLabel>
+                <FieldDescription className="text-xs sm:text-sm">
+                  {field.value?.length || 0} / 120
+                </FieldDescription>
+              </FieldContent>
+              <Textarea
+                {...field}
+                id={field.name}
+                maxLength={120}
+                aria-invalid={fieldState.invalid}
+                className="text-xs sm:text-sm"
+              />
+              {fieldState.invalid && (
+                <FieldError className="text-xs">
+                  {fieldState.error?.message}
+                </FieldError>
+              )}
+            </Field>
+          )}
+        />
       </FieldGroup>
 
-      <Item variant="muted" className="border-border">
-        <ItemContent>
-          <ItemTitle className="text-2xs sm:text-xs">PLAN CHECKPOINT</ItemTitle>
-          <ItemDescription className="text-xs sm:text-sm">
-            The selected model and zero, one or two initiatives form one
-            complete allocation. Factual warnings stay visible: no
-            recommendation or score is revealed.
-          </ItemDescription>
-        </ItemContent>
-      </Item>
+      <div className="overflow-hidden rounded-xl border">
+        <Table className="w-full text-xs sm:text-sm">
+          <TableHeader className="bg-accent">
+            <TableRow>
+              {SUMMARY_TABLE.headers.map((header, index) => (
+                <TableHead
+                  key={header}
+                  className={`px-4 py-3 text-center ${index > 0 ? "border-l" : ""}`}
+                >
+                  {header}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {SUMMARY_TABLE.rows.map((row, rowIndex) => (
+              <TableRow key={rowIndex}>
+                {row.map((cell, cellIndex) => (
+                  <TableCell
+                    key={cellIndex}
+                    className={`px-4 py-3 text-center ${cellIndex > 0 ? "border-l" : ""}`}
+                  >
+                    {cell}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
