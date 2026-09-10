@@ -81,7 +81,7 @@ function StudentCard({
   return (
     <Card
       className={cn(
-        "relative shadow-xl transition-transform duration-300 ease-in-out hover:scale-99 hover:shadow-lg active:scale-95",
+        "relative shadow-xl transition-transform duration-300 ease-in-out hover:scale-101",
         isLarge
           ? "p-2! [--card-spacing:--spacing(3)] sm:max-w-3xs"
           : "w-full max-w-42 shrink overflow-visible p-1.5! [--card-spacing:--spacing(2)]",
