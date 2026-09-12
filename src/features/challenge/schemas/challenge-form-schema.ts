@@ -1,15 +1,20 @@
 import { z } from "zod";
 
+import { FINAL_MARKETS, PRIMARY_BOARD_METRICS } from "../constants/step-five";
+import { DECISION_HORIZONS, SUNK_COST_OPTIONS } from "../constants/step-four";
+import { CITIES } from "../constants/step-one";
+import { INITIATIVES, MODELS } from "../constants/step-three";
+
 export const challengeFormSchema = z.object({
-  // Step 1: Hypothesis
-  city: z.enum(["Jaipur", "Pune", "Bengaluru"], {
+  // Step 1
+  investigatedCity: z.enum(CITIES, {
     message: "Please select one city",
   }),
   attractiveSignals: z
     .array(z.string())
     .min(2, "Please select exactly 2 signals")
     .max(2, "Please select exactly 2 signals"),
-  concern: z.enum(
+  primaryConcern: z.enum(
     [
       "Competitive intensity",
       "Weak unit economics",
@@ -20,72 +25,104 @@ export const challengeFormSchema = z.object({
       message: "Please select your biggest concern",
     },
   ),
-  hypothesis: z
+  initialHypothesis: z
     .string()
     .min(1, "Hypothesis summary is required")
     .max(80, "Hypothesis must be 80 characters or fewer"),
 
-  // Step 2: Prove / Disprove
-  dashCartCity: z.enum(["Jaipur", "Pune", "Bengaluru"], {
+  // Step 2
+  prioritisedCity: z.enum(CITIES, {
     message: "Please select a city",
   }),
+  economics: z.object({
+    contributionOrder: z.object({
+      pune: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+      jaipur: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+      kochi: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+    }),
+    monthlyOperatingContribution: z.object({
+      pune: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+      jaipur: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+      kochi: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+    }),
+    breakEvenMonthlyOrders: z.object({
+      pune: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+      jaipur: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+      kochi: z
+        .string()
+        .min(1)
+        .regex(/^-?[0-9,]*\.?[0-9]+$/, "Must be a number"),
+    }),
+  }),
 
-  // Step 3: Allocate
-  entryModel: z.enum(["Owned Dark Stores", "Retail Partner", "Hybrid"], {
+  // Step 3
+  entryModel: z.enum(MODELS, {
     message: "Please select an entry model",
   }),
   strategicInitiatives: z
-    .array(z.string())
+    .array(z.enum(INITIATIVES))
     .min(2, "Please select exactly 2 initiatives")
     .max(2, "Please select exactly 2 initiatives"),
-  unfundedInitiative: z
-    .string({
-      message: "Please select one initiative to not fund",
-    })
-    .min(1, "Please select one initiative to not fund"),
-  tradeoffText: z
+  hardestUnfundedInitiative: z.enum(INITIATIVES, {
+    message: "Please select which initiative was hardest to leave out",
+  }),
+  isBudgetExceeded: z.boolean().optional(),
+  budgetAcknowledged: z.boolean().optional(),
+  tradeoffExplanation: z
     .string()
     .min(1, "This field is required")
     .max(120, "Max 120 characters"),
 
-  // Step 4: Re-evaluate
-  decision: z
-    .string({
-      message: "Please select your decision",
-    })
-    .min(1, "Please select your decision"),
-  decisionHorizon: z.enum(["12 months", "24 months", "balanced"], {
+  // Step 4
+  strategicDecision: z.enum(FINAL_MARKETS, {
+    message: "Please select your decision",
+  }),
+  decisionHorizon: z.enum(DECISION_HORIZONS, {
     message: "Please select a horizon",
   }),
-  sunkCostTreatment: z
-    .string()
-    .min(1, "This field is required")
-    .max(100, "Max 100 characters"),
-  defenceText: z
+  sunkCostTreatment: z.enum(SUNK_COST_OPTIONS, {
+    message: "Please select how to treat the ₹45L spent",
+  }),
+  decisionDefence: z
     .string()
     .min(1, "Decision summary is required")
     .max(100, "Max 100 characters"),
-  assumptionToValidate: z
+  keyAssumptionToValidate: z
     .string()
     .min(1, "This field is required")
     .max(40, "Max 40 characters"),
 
-  // Step 5: Recommend
-  finalMarket: z.enum(["Jaipur", "Pune", "Bengaluru"], {
-    message: "Please select a city",
+  // Step 5
+  finalTargetMarket: z.enum(FINAL_MARKETS, {
+    message: "Please select a final market",
   }),
-  primaryBoardMetric: z.enum(
-    [
-      "Contribution Margin per Order (₹)",
-      "On-Time Delivery Rate (%)",
-      "Monthly Order Volume / Demand",
-      "Launch Timeline / Time to Market (Weeks)",
-      "Customer Lifetime Value / Payback Period",
-    ],
-    {
-      message: "Please select a primary board metric",
-    },
-  ),
+  primaryBoardMetric: z.enum(PRIMARY_BOARD_METRICS, {
+    message: "Please select a primary board metric",
+  }),
   ceoMemo: z
     .string()
     .min(1, "This field is required")

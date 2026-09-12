@@ -1,4 +1,4 @@
-import { CheckIcon } from "@hugeicons/core-free-icons";
+import { CheckIcon, Logout01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import LinkButton from "@/components/link-button";
@@ -19,17 +19,15 @@ export default function SuccessPage() {
         <h1 className="text-lg font-medium tracking-tight sm:text-2xl sm:font-semibold">
           Your DashCart challenge is in.
         </h1>
-        <p className="text-muted-foreground max-w-sm text-xs sm:text-sm">
+        {/* <p className="text-muted-foreground max-w-sm text-xs sm:text-sm">
           Your expansion hypothesis and unit economics breakdown for DashCart
           have been successfully logged and sent for evaluation.
-        </p>
+        </p> */}
       </div>
 
-      <LinkButton
-        href="/challenges/dashcart-expansion"
-        className="w-full p-5 text-xs sm:text-sm"
-      >
-        Return to Challenges
+      <LinkButton href="/" className="w-full p-5 text-xs sm:text-sm">
+        Exit
+        <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />
       </LinkButton>
     </div>
   );

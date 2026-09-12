@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldTitle } from "@/components/ui/field";
 import { type ChallengeFormValues } from "../../challenge/schemas/challenge-form-schema";
+import { FORM_STEPS } from "../constants/form";
 
 type PreviewItem = {
   label: string;
@@ -42,9 +43,9 @@ export default function FormPreviewDialog({
 }: FormPreviewDialogProps) {
   const sections: Sections[] = [
     {
-      title: "Step 01 · Hypothesis",
+      title: `Step 01 · ${FORM_STEPS[0]?.title ?? "Hypothesis"}`,
       items: [
-        { label: "Investigated City", value: values.city },
+        { label: "Investigated City", value: values.investigatedCity },
         {
           label: "Attractive Signals",
           value:
@@ -54,21 +55,21 @@ export default function FormPreviewDialog({
         },
         {
           label: "Primary Concern",
-          value: values.concern || "—",
+          value: values.primaryConcern || "—",
         },
         {
           label: "Initial Hypothesis",
-          value: values.hypothesis,
+          value: values.initialHypothesis,
           isTextBlock: true,
         },
       ],
     },
     {
-      title: "Step 02 · Economics",
-      items: [{ label: "Prioritised City", value: values.dashCartCity }],
+      title: `Step 02 · ${FORM_STEPS[1]?.title ?? "Prove / Disprove"}`,
+      items: [{ label: "Prioritised City", value: values.prioritisedCity }],
     },
     {
-      title: "Step 03 · Capital Allocation",
+      title: `Step 03 · ${FORM_STEPS[2]?.title ?? "Allocate"}`,
       items: [
         { label: "Entry Model", value: values.entryModel },
         {
@@ -80,22 +81,27 @@ export default function FormPreviewDialog({
               : "None selected",
         },
         {
-          label: "Initiative Not Funded",
-          value: values.unfundedInitiative || "None selected",
+          label: "Hardest Unfunded Initiative to Leave Out",
+          value: values.hardestUnfundedInitiative || "None selected",
         },
         {
           label: "Trade-off Explanation",
-          value: values.tradeoffText,
+          value: values.tradeoffExplanation,
           isTextBlock: true,
         },
       ],
     },
     {
-      title: "Step 04 · Re-evaluation",
+      title: `Step 04 · ${FORM_STEPS[3]?.title ?? "Re-evaluate"}`,
       items: [
         {
           label: "Strategic Decision",
-          value: values.decision || "—",
+          value:
+            values.strategicDecision === "Jaipur"
+              ? "Stick with Jaipur"
+              : values.strategicDecision === "Kochi"
+                ? "Switch to Kochi"
+                : values.strategicDecision || "—",
         },
         {
           label: "Decision Horizon",
@@ -108,22 +114,22 @@ export default function FormPreviewDialog({
         },
         {
           label: "Decision Defense & Counterargument",
-          value: values.defenceText,
+          value: values.decisionDefence,
           isTextBlock: true,
         },
         {
           label: "Key Assumption to Validate",
-          value: values.assumptionToValidate,
+          value: values.keyAssumptionToValidate,
           isTextBlock: true,
         },
       ],
     },
     {
-      title: "Step 05 · Final Recommendation",
+      title: `Step 05 · ${FORM_STEPS[4]?.title ?? "Recommend"}`,
       items: [
         {
           label: "Final Target Market",
-          value: values.finalMarket,
+          value: values.finalTargetMarket,
         },
         {
           label: "Primary Board Metric",
@@ -156,7 +162,7 @@ export default function FormPreviewDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="no-scrollbar -mx-4 space-y-6 overflow-y-auto p-4">
+        <div className="-mx-4 space-y-6 overflow-y-auto p-4">
           {sections.map((section) => (
             <PreviewCard
               key={section.title}

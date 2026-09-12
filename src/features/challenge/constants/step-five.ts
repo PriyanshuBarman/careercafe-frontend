@@ -1,9 +1,15 @@
+export const FINAL_MARKETS = ["Jaipur", "Kochi"] as const;
+
+export type FinalMarket = (typeof FINAL_MARKETS)[number];
+
 export const PRIMARY_BOARD_METRICS = [
-  "Contribution Margin per Order (₹)",
-  "On-Time Delivery Rate (%)",
-  "Monthly Order Volume / Demand",
-  "Launch Timeline / Time to Market (Weeks)",
-  "Customer Lifetime Value / Payback Period",
+  "Monthly operating contribution",
+  "Contribution/order",
+  "On-time delivery",
+  "Monthly orders",
+  "Capacity utilisation",
+  "Repeat rate",
+  "Other",
 ] as const;
 
 export type PrimaryBoardMetric = (typeof PRIMARY_BOARD_METRICS)[number];

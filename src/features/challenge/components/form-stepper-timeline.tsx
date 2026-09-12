@@ -1,17 +1,17 @@
 import { cn } from "@/lib/utils";
-import { FORM_STEPS } from "../constants/right-column";
+import { FORM_STEPS } from "../constants/form";
 
-type FormStepperProps = {
+type FormStepperTimelineProps = {
   currentStep: number;
   maxStepReached: number;
   onSelectStep: (stepIndex: number) => void;
 };
 
-export default function FormStepper({
+export default function FormStepperTimeline({
   currentStep,
   maxStepReached = currentStep,
   onSelectStep,
-}: FormStepperProps) {
+}: FormStepperTimelineProps) {
   const effectiveMaxStep = Math.max(currentStep, maxStepReached);
 
   return (
@@ -51,7 +51,8 @@ export default function FormStepper({
                   "text-2xs flex size-8 items-center justify-center rounded-full border font-semibold tabular-nums transition-all sm:size-12 sm:text-sm",
                   isFilled &&
                     "bg-primary text-primary-foreground border-primary shadow-sm",
-                  isCurrent && "ring-primary/25 scale-105 ring-4",
+                  isCurrent &&
+                    "ring-primary/25 dark:ring-primary/30 scale-105 ring-4 sm:ring-5",
                   isClickable &&
                     !isCurrent &&
                     "group-hover:scale-105 group-hover:opacity-90",

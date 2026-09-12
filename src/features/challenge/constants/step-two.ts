@@ -1,42 +1,53 @@
-export const CITIES = [
-  {
-    title: "Pune",
-    description: "5.2L HH · 28% Growth",
-  },
-  {
-    title: "Jaipur",
-    description: "Higher contribution market",
-  },
-  {
-    title: "Bengaluru",
-    description: "Headquarter market",
-  },
+import type { TableData } from "@/components/simple-table";
+
+export const FORMULAS = [
+  "Contribution / order = (AOV x Gross Margin %) - Discount - Last-mile - Pick & Pack - Shrink",
+  "Monthly operating contribution = (Contribution /order x Orders) - Rent - Fixed Ops",
+  "Break-even orders = Monthly Fixed Cost - Contribution / order",
 ];
 
-interface EconomicsMetric {
-  metric: string;
-  pune: string;
-  jaipur: string;
-  kochi: string;
+export interface EconomicsMetricRow {
+  id:
+    | "contributionOrder"
+    | "monthlyOperatingContribution"
+    | "breakEvenMonthlyOrders";
+  label: string;
+  placeholder: string;
+  unit: string;
 }
 
-export const ECONOMICS_METRICS = [
+export const ECONOMICS_METRIC_ROWS = [
   {
-    metric: "Contribution/order",
-    pune: "26.0",
-    jaipur: "42.6",
-    kochi: "49.0",
+    id: "contributionOrder",
+    label: "Contribution/order ",
+    placeholder: "0",
+    unit: "₹/order",
   },
   {
-    metric: "Monthly operating contribution",
-    pune: "-25.8",
-    jaipur: "19.3",
-    kochi: "2.1",
+    id: "monthlyOperatingContribution",
+    label: "Monthly operating contribution",
+    placeholder: "0",
+    unit: "₹ lakh/month",
   },
   {
-    metric: "Break-even monthly orders",
-    pune: "26,923",
-    jaipur: "17,981",
-    kochi: "28,571",
+    id: "breakEvenMonthlyOrders",
+    label: "Break-even monthly orders",
+    placeholder: "0",
+    unit: "orders/month",
   },
-] as const satisfies readonly EconomicsMetric[];
+] as const satisfies readonly EconomicsMetricRow[];
+
+// --- Info / Exhibit Data ---
+export const STEP_TWO_TABLE: TableData = {
+  headers: ["Metric", "Pune", "Jaipur", "Kochi"],
+  rows: [
+    ["Monthly orders", "170k", "125k", "90k"],
+    ["Average order value", "₹720", "₹590", "₹650"],
+    ["Gross margin", "25%", "24%", "26%"],
+    ["Discount / order", "₹50", "₹26", "₹30"],
+    ["Last-mile / order", "₹72", "₹44", "₹60"],
+    ["Pick, pack and shrink", "₹32", "₹29", "₹30"],
+    ["Required dark stores", "5", "3", "3"],
+    ["Monthly fixed ops", "₹70L", "₹34L", "₹42L"],
+  ],
+};
