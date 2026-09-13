@@ -15,15 +15,9 @@ export default function SuccessPage() {
         />
       </div>
 
-      <div className="space-y-2 text-center sm:space-y-4">
-        <h1 className="text-lg font-medium tracking-tight sm:text-2xl sm:font-semibold">
-          Your DashCart challenge is in.
-        </h1>
-        {/* <p className="text-muted-foreground max-w-sm text-xs sm:text-sm">
-          Your expansion hypothesis and unit economics breakdown for DashCart
-          have been successfully logged and sent for evaluation.
-        </p> */}
-      </div>
+      <h1 className="text-lg font-medium tracking-tight sm:text-2xl sm:font-semibold">
+        Submission confirmed.
+      </h1>
 
       <LinkButton href="/" className="w-full p-5 text-xs sm:text-sm">
         Exit

@@ -8,27 +8,38 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-type TableCell = string | number | boolean | null | undefined;
+export type TableCell = string | number | boolean | null | undefined;
 
-export type TableData = {
-  headers: readonly (string | number)[];
-  rows: readonly (readonly TableCell[])[];
+export type TableColumn<K extends string | number = string> = {
+  key: K;
+  header: string | number;
 };
 
-type SimpleTableProps = {
-  data: TableData;
+export type TableData<K extends string | number = string> = {
+  columns: readonly TableColumn<K>[];
+  rows: readonly Record<K, TableCell>[];
+};
+
+type SimpleTableProps<K extends string | number> = {
+  data: TableData<K>;
   className?: string;
 };
 
-export default function SimpleTable({ data, className }: SimpleTableProps) {
+export default function SimpleTable<K extends string | number>({
+  data,
+  className,
+}: SimpleTableProps<K>) {
   return (
-    <div className={cn("overflow-hidden rounded-xl border", className)}>
-      <Table>
+    <div className={cn("overflow-hidden rounded-xl border text-xs", className)}>
+      <Table className="text-xs sm:text-sm">
         <TableHeader className="bg-accent">
           <TableRow>
-            {data.headers.map((header, index) => (
-              <TableHead key={index} className="px-4 py-3 not-first:border-l">
-                {header}
+            {data.columns.map((col) => (
+              <TableHead
+                key={String(col.key)}
+                className="px-4 py-3 not-first:border-l"
+              >
+                {col.header}
               </TableHead>
             ))}
           </TableRow>
@@ -36,12 +47,12 @@ export default function SimpleTable({ data, className }: SimpleTableProps) {
         <TableBody>
           {data.rows.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
-              {row.map((cell, cellIndex) => (
+              {data.columns.map((col) => (
                 <TableCell
-                  key={cellIndex}
+                  key={String(col.key)}
                   className="px-4 py-3 whitespace-normal not-first:border-l"
                 >
-                  {cell}
+                  {row[col.key]}
                 </TableCell>
               ))}
             </TableRow>
