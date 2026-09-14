@@ -147,8 +147,8 @@ export default function FormPreviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="h-[90vh] sm:max-w-xl">
-        <DialogHeader>
+      <DialogContent className="h-[90vh] sm:max-w-2xl">
+        <DialogHeader className="sm:p-2">
           <DialogTitle className="sm:text-xl">
             Review Your Application
           </DialogTitle>
@@ -158,7 +158,7 @@ export default function FormPreviewDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="-mx-4 space-y-6 overflow-y-auto p-4">
+        <div className="-mx-4 space-y-6 overflow-y-auto p-4 sm:p-6">
           {sections.map((section) => (
             <PreviewCard
               key={section.title}
@@ -168,19 +168,19 @@ export default function FormPreviewDialog({
           ))}
         </div>
 
-        <DialogFooter className="mt-auto gap-2 sm:justify-between">
+        <DialogFooter className="mt-auto gap-2 sm:justify-between sm:px-6">
           <Button
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="text-xs sm:text-sm"
+            className="p-4 text-xs sm:p-5 sm:text-sm"
           >
             Back to Edit
           </Button>
           <Button
             type="button"
             onClick={onConfirmSubmit}
-            className="text-xs sm:text-sm"
+            className="p-4 text-xs sm:p-5 sm:text-sm"
           >
             <HugeiconsIcon
               icon={Tick01Icon}

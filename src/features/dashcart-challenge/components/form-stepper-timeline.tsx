@@ -3,18 +3,13 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 import { cn } from "@/lib/utils";
 import { FORM_STEPS } from "../constants/form";
+import { useChallengeStore } from "../store/challenge-store";
 
-type FormStepperTimelineProps = {
-  currentStep: number;
-  maxStepReached: number;
-  onSelectStep: (stepIndex: number) => void;
-};
+export default function FormStepperTimeline() {
+  const currentStep = useChallengeStore((state) => state.currentStep);
+  const maxStepReached = useChallengeStore((state) => state.maxStepReached);
+  const setCurrentStep = useChallengeStore((state) => state.setCurrentStep);
 
-export default function FormStepperTimeline({
-  currentStep,
-  maxStepReached = currentStep,
-  onSelectStep,
-}: FormStepperTimelineProps) {
   const effectiveMaxStep = Math.max(currentStep, maxStepReached);
 
   return (
@@ -34,14 +29,14 @@ export default function FormStepperTimeline({
           const isCurrent = currentStep === index;
           const isCompleted = index < effectiveMaxStep;
           const isFilled = index <= effectiveMaxStep;
-          const isClickable = isFilled && onSelectStep !== undefined;
+          const isClickable = isFilled;
 
           return (
             <div
               key={item.step}
               onClick={() => {
                 if (isClickable) {
-                  onSelectStep(index);
+                  setCurrentStep(index);
                 }
               }}
               role={isClickable ? "button" : undefined}

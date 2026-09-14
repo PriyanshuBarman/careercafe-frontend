@@ -1,9 +1,6 @@
-import { AlarmClockIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-
-import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import ThemeToggle from "@/components/theme-toggle";
+import CountdownTimer from "./countdown-timer";
 
 export default function ChallengeHeader() {
   return (
@@ -27,13 +24,7 @@ export default function ChallengeHeader() {
             className="bg-transparent max-sm:hidden sm:rounded-xl sm:p-5"
           />
 
-          <Button
-            variant="secondary"
-            className="gap-2 p-4 text-xs sm:p-5 sm:text-sm"
-          >
-            <HugeiconsIcon icon={AlarmClockIcon} strokeWidth={2} /> 01:20:00
-            remaining
-          </Button>
+          <CountdownTimer />
         </div>
       </div>
     </header>

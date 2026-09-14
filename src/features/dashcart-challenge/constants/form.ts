@@ -1,13 +1,42 @@
 import type { ChallengeFormData } from "../schemas/form-schema";
 
 export const CHALLENGE_FORM_DEFAULT_VALUES: Partial<ChallengeFormData> = {
+  // Step 1
+  investigatedCity: undefined,
   attractiveSignals: [],
+  primaryConcern: undefined,
+  initialHypothesis: "",
+
+  // Step 2
+  prioritisedCity: undefined,
   economics: {
     contributionOrder: { pune: "", jaipur: "", kochi: "" },
     monthlyOperatingContribution: { pune: "", jaipur: "", kochi: "" },
     breakEvenMonthlyOrders: { pune: "", jaipur: "", kochi: "" },
   },
+  stressTestMetric: undefined,
+  viewInterpretation: "",
+
+  // Step 3
+  entryModel: undefined,
   strategicInitiatives: [],
+  hardestUnfundedInitiative: undefined,
+  isBudgetExceeded: false,
+  budgetAcknowledged: false,
+  tradeoffExplanation: "",
+
+  // Step 4
+  strategicDecision: undefined,
+  decisionHorizon: undefined,
+  sunkCostTreatment: undefined,
+  decisionDefence: "",
+  keyAssumptionToValidate: "",
+
+  // Step 5
+  finalTargetMarket: undefined,
+  primaryBoardMetric: undefined,
+  ceoMemo: "",
+  reversalCondition: "",
 };
 
 interface FormStep {
