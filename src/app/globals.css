@@ -202,24 +202,23 @@
   html {
     @apply scrollbar-gutter-stable font-sans;
   }
-}
+  ::selection {
+    @apply bg-primary text-background;
+  }
 
-::selection {
-  @apply bg-primary text-background;
-}
-
-/* Custom scrollbar styling. */
-::-webkit-scrollbar {
-  width: 5px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--ring);
-  border-radius: 5px;
-}
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--ring) transparent;
+  /* Custom scrollbar styling. */
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--ring);
+    border-radius: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ring) transparent;
+  }
 }

@@ -24,7 +24,7 @@ export const HOW_IT_WORKS_STEPS = [
     features: [
       "Topic-based practice across SQL, Python, cases and communication",
       "Hints, retries and instant feedback",
-      "Learn calmly before interview pressure",
+      "Practise calmly before interview pressure",
     ],
   },
   {

@@ -21,12 +21,12 @@ export default function Navbar() {
             className="bg-transparent sm:rounded-full sm:p-5"
           />
 
-          <Button variant="ghost" className="px-4 py-5 max-sm:hidden">
-            Login
-          </Button>
-
           <Button variant="secondary" className="p-5 max-sm:hidden">
             Signup
+          </Button>
+
+          <Button className="px-4 py-5 font-normal max-sm:hidden">
+            Start Practicing Free
           </Button>
 
           {/* Mobile Menu */}

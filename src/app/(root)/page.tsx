@@ -10,9 +10,9 @@ export default function Home() {
   return (
     <div>
       <Hero />
-      <AnalystDirections />
       <Programmes />
       <HowItWorks />
+      <AnalystDirections />
       <CompanyPrep />
       <Testimonials />
       <CampusChallenge />

@@ -16,23 +16,22 @@ export const ANALYST_ROLES = [
   {
     icon: ChartUpIcon,
     title: "Business & Operations",
-    description: "Cases · Guesstimates · Excel · Business Metrics",
+    description: "Business & Operations	Business decisions, operations, cases",
   },
   {
     icon: DatabaseSearchIcon,
     title: "Data & BI",
-    description: "Data & BI	SQL · Excel · Dashboards · Data Interpretation",
+    description: "SQL, BI, analytics, insight",
   },
   {
     icon: CodeXmlIcon,
     title: "Technical Analyst",
-    description:
-      "Technical Analyst	SQL · Python · DSA Basics · Technical Fundamentals",
+    description: "Python/SQL, data systems, APIs/AI",
   },
   {
     icon: User03Icon,
     title: "Consulting Analyst",
     description:
-      "Cases · Structured Thinking · Recommendations · Communication",
+      "Consulting & Strategy	Cases, guesstimates, structured reasoning",
   },
 ] as const satisfies readonly AnalystPathwayItem[];
