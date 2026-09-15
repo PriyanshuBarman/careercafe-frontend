@@ -15,12 +15,12 @@ type SearchBarProps = {
 
 export default function SearchBar({ query, onQueryChange }: SearchBarProps) {
   return (
-    <InputGroup className="flex-1 px-1 py-2 md:py-5">
+    <InputGroup className="flex-1 px-1 md:py-5">
       <InputGroupInput
         placeholder="Search questions..."
         value={query}
         onChange={(e) => onQueryChange(e.target.value)}
-        className="max-sm:text-sm"
+        className="py-5 text-sm sm:text-base"
       />
       <InputGroupAddon>
         <HugeiconsIcon strokeWidth={2} icon={SearchIcon} className="size-4.5" />

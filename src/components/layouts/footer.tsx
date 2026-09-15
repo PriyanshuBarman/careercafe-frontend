@@ -2,7 +2,7 @@ import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 import { Separator } from "@/components/ui/separator";
-import { LinkButton } from "@/components/link-button";
+import LinkButton from "@/components/link-button";
 import Logo from "@/components/logo";
 import { FOOTER_SECTIONS } from "@/constants/footer";
 import { SITE_INFO, SOCIALS } from "@/constants/site";

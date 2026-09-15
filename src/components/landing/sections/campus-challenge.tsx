@@ -80,7 +80,7 @@ export default function CampusChallenge() {
               </Item>
             ))}
 
-            <Item variant="muted" className="border-border rounded-2xl p-4">
+            <Item variant="outline" className="rounded-2xl p-4">
               <ItemContent>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-xs font-medium sm:gap-x-4 sm:text-sm">
                   {FLOW_STEPS.map((step, index) => (

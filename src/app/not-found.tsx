@@ -9,7 +9,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { LinkButton } from "@/components/link-button";
+import LinkButton from "@/components/link-button";
 
 export const metadata: Metadata = {
   title: "Page Not Found",
@@ -20,7 +20,7 @@ export default function NotFoundPage() {
     <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden">
       <Empty>
         <EmptyHeader>
-          <EmptyTitle className="mask-b-from-20% mask-b-to-80% text-9xl font-extrabold">
+          <EmptyTitle className="text-primary dark:text-primary mask-b-from-20% mask-b-to-80% text-9xl font-extrabold">
             404
           </EmptyTitle>
           <EmptyDescription className="text-foreground/80 -mt-4 text-nowrap">
